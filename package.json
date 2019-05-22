@@ -29,7 +29,9 @@
   },
   "dependencies": {
     "babel-runtime": "6.26.0",
+    "bs58": "^4.0.1",
     "eosjs-ecc": "4.0.4",
+    "long": "^4.0.0",
     "text-encoding": "0.7.0"
   },
   "devDependencies": {
