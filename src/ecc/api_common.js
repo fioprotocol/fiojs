@@ -1,4 +1,3 @@
-const Aes = require("./aes")
 const PrivateKey = require("./key_private")
 const PublicKey = require("./key_public")
 const Signature = require("./signature")

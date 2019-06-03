@@ -1,9 +1,10 @@
 /**
  * @module AccountName
  */
-import { PublicKey } from 'eosjs-ecc';
 import * as bs58 from 'bs58';
 import * as Long from 'long';
+
+const { PublicKey } = require('./ecc');
 
 /**
     Hashes a public key to a valid EOSIO account name.

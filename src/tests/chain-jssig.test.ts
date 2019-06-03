@@ -1,5 +1,6 @@
-import * as ecc from 'eosjs-ecc';
 import { JsSignatureProvider } from '../chain-jssig';
+
+const ecc = require('../ecc');
 
 describe('JsSignatureProvider', () => {
     const privateKeys = ['key1', 'key2', 'key3'];

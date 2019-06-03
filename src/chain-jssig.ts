@@ -3,9 +3,10 @@
  */
 // copyright defined in fiojs/LICENSE.txt
 
-import * as ecc from 'eosjs-ecc';
 import { SignatureProvider, SignatureProviderArgs } from './chain-api-interfaces';
 import { convertLegacyPublicKey } from './chain-numeric';
+
+const ecc = require('./ecc');
 
 function hexToUint8Array(hex: string) {
     if (typeof hex !== 'string') {
