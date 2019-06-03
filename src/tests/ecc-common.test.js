@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 const assert = require('assert')
 
-const ecc = require('.')
+const ecc = require('../ecc')
 
 const wif = '5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss'
 
@@ -82,7 +82,7 @@ describe('Common API', () => {
 })
 
 describe('Common API (initialized)', () => {
-  it('initialize', () => ecc.initialize())
+  it('initialize', () => {ecc.initialize()})
 
   it('randomKey', () => {
     const cpuEntropyBits = 1

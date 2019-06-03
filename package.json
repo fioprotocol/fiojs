@@ -9,7 +9,7 @@
     "prepare": "npm run build",
     "lint": "tslint -c tslint.json -p tsconfig.json",
     "lint-fix": "tslint -c tslint.json -p tsconfig.json --fix",
-    "test": "jest src/tests/chain-*.test.ts src/tests/fiojs-*.test.ts",
+    "test": "jest 'src/tests/.*\\.test\\.ts'",
     "test-node": "jest src/tests/*node*",
     "test-all": "yarn test && yarn test-node && yarn cypress",
     "build": "mkdir -p dist && cp -r src/ecc dist && cp src/ripemd.es5.js dist/ripemd.js && tsc -p ./tsconfig.json",
@@ -80,7 +80,7 @@
         "tsConfig": "tsconfig.json"
       }
     },
-    "testRegex": "(/src/.*(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testRegex": "(/src/.*(\\.|/)(test|spec|nodetest))\\.(jsx?|tsx?)$",
     "testEnvironment": "node"
   }
 }

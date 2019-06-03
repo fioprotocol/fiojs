@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 const assert = require('assert')
 
-const ecc = require('.')
+const ecc = require('../ecc')
 
 const {PublicKey, PrivateKey, Signature} = ecc
 
@@ -12,7 +12,7 @@ describe('Object API', () => {
 
   describe('secp256k1 keys', () => {
     it('randomKey', function() {
-      this.timeout(1100)
+      jest.setTimeout(1100)
       return PrivateKey.randomKey()
     })
 
