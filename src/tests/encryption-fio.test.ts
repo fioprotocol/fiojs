@@ -22,8 +22,7 @@ describe('Encryption FIO', () => {
     it('serialize', function() {
         const buffer = new ser.SerialBuffer({ textEncoder, textDecoder });
         serialize(buffer, 'new_funds_content', newFundsContent);
-        expect(buffer.length).toBeGreaterThan(0);
-        // console.log( ser.arrayToHex(buffer.asUint8Array()) )
+        expect(ser.arrayToHex(buffer.asUint8Array())).toEqual(newFundsContentHex);
     })
 
     it('deserialize', function() {
