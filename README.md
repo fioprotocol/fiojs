@@ -113,7 +113,7 @@ publicKeyBob = privateKeyBob.toPublic();
 cipherAlice = Fio.createDiffieCipher(privateKeyAlice, publicKeyBob, new TextEncoder(), new TextDecoder());
 cipherAliceHex = cipherAlice.encrypt('new_funds_content', newFundsContent);
 
-// Alice sends cipherAliceHex to Bob view new_funds_request
+// Alice sends cipherAliceHex to Bob via new_funds_request
 
 cipherBob = Fio.createDiffieCipher(privateKeyBob, publicKeyAlice, new TextEncoder(), new TextDecoder());
 newFundsContentBob = cipherBob.decrypt('new_funds_content', cipherAliceHex);
