@@ -54,7 +54,7 @@ export function checkDecrypt(secret: Buffer, message: Buffer) : Buffer {
     const Km = K.slice(32); // MAC
     const IV = message.slice(0, 16);
     const C = message.slice(16, message.length - 32);
-    const M = message.slice(32);
+    const M = message.slice(message.length - 32);
 
     // Side-channel attack protection: First verify the HMAC, then and only then proceed to the decryption step
     const Mc = createHmac('sha256', Km).update(Buffer.concat([IV, C])).digest();
@@ -65,5 +65,5 @@ export function checkDecrypt(secret: Buffer, message: Buffer) : Buffer {
 
     // Cipher performs PKCS#5 padded automatically
     const cipher = crypto.createDecipheriv('aes-256-cbc', Ke, IV);
-    return Buffer.concat([cipher.update(C), cipher.final()]);
+    return Buffer.concat([cipher.update(C, 'binary'), cipher.final()]);
 }

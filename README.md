@@ -2,68 +2,122 @@
 FIO JS Library
 
 # How to install/setup
+```js
 npm install
-tsc 
+tsc
+```
 
 # Errors Installing?
 if you don’t have tsc, install it:
+```js
 npm install -g typescript
+```
+
+# Import
+```js
+const { Fio, Ecc } = require('fiojs');
+const { TextEncoder, TextDecoder } = require('util');                   // node only; native TextEncoder/Decoder
+const { TextEncoder, TextDecoder } = require('text-encoding');          // React Native, IE11, and Edge Browsers only
+```
 
 # How to Test
-The mock tests run under `npm run test` and those don't require a node.. That will probably cover most of the changes we make.
-The `test-node` target needs a node with a specific key with Bob and Alice accounts. Unless your merging patches or changing something internal you may not need to run the node test at all. I just wanted to make sure we had that option preserved. You could try it on you own node with something like this:
+The mock tests run under `npm run test` and those don't require nodeosd.. That will cover most of the changes made.
+The `npm run test-node` target needs a node with a specific key with Bob and Alice accounts. Unless your merging patches or changing something internal you may not need to run the node test at all.  You could try it on you own node with something like this:
+
+```bash
 #test_privkey=5JuH9fCXmU3xbj8nRmhPZaVrxxXrdPaRmZLW1cznNTmTQR2Kg5Z
 test_pubkey=EOS7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8
 cleos create account eosio bob $test_pubkey
 cleos create account eosio alice $test_pubkey
 cleos transfer eosio.token bob '1000 SYS'
 cleos transfer eosio.token alice '1000 SYS'
+```
 
-# example of rpc call
-This is a full example that includes the external rpc code you plan to use outside of the `Fio` instance:
+# prepareTransaction - client-side serialization and signing
+This is a full example that includes the external RPC code you plan to use outside of the `Fio` instance:
+```js
+info = await rpc.get_info();
+blockInfo = await rpc.get_block(info.last_irreversible_block_num);
+currentDate = new Date();
+timePlusTen = currentDate.getTime() + 10000;
+timeInISOString = (new Date(timePlusTen)).toISOString();
+expiration = timeInISOString.substr(0, timeInISOString.length - 1);
 
-const info = await rpc.get_info();
-    const blockInfo = await rpc.get_block(info.last_irreversible_block_num);
-    const currentDate = new Date();
-    const timePlusTen = currentDate.getTime() + 10000;
-    const timeInISOString = (new Date(timePlusTen)).toISOString();
-    const expiration = timeInISOString.substr(0, timeInISOString.length - 1);
+transaction = {
+    expiration,
+    ref_block_num: blockInfo.block_num & 0xffff,
+    ref_block_prefix: blockInfo.ref_block_prefix,
+    actions: [{
+        account: 'eosio.token',
+        name: 'transfer',
+        authorization: [{
+            actor: 'bob',
+            permission: 'active',
+        }],
+        data: {
+            from: 'bob',
+            to: 'alice',
+            quantity: '0.0001 SYS',
+            memo: '',
+        },
+    }]
+};
 
-    const transaction = {
-        expiration,
-        ref_block_num: blockInfo.block_num & 0xffff,
-        ref_block_prefix: blockInfo.ref_block_prefix,
-        actions: [{
-            account: 'eosio.token',
-            name: 'transfer',
-            authorization: [{
-                actor: 'bob',
-                permission: 'active',
-            }],
-            data: {
-                from: 'bob',
-                to: 'alice',
-                quantity: '0.0001 SYS',
-                memo: '',
-            },
-        }]
-    };
+abiMap = new Map()
+tokenRawAbi = await rpc.get_raw_abi('eosio.token')
+abiMap.set('eosio.token', tokenRawAbi)
 
-    const abiMap = new Map()
-    const tokenRawAbi = await rpc.get_raw_abi('eosio.token')
-    abiMap.set('eosio.token', tokenRawAbi)
+tx = await Fio.prepareTransaction({transaction, chainId, privateKeys, abiMap,
+textDecoder: new TextDecoder(), textEncoder: new TextEncoder()});
 
-    const tx = await Fio.prepareTransaction({transaction, chainId, privateKeys, abiMap,
-    textDecoder: new TextDecoder(), textEncoder: new TextEncoder()});
+pushResult = await fetch(httpEndpoint + '/v1/chain/push_transaction', {
+    body: JSON.stringify(tx),
+    method: 'POST',
+});
 
-    const pushResult = await fetch(httpEndpoint + '/v1/chain/push_transaction', {
-        body: JSON.stringify(tx),
-        method: 'POST',
-    });
+json = await pushResult.json()
+if (json.processed && json.processed.except) {
+    throw new RpcError(json);
+}
 
-    const json = await pushResult.json()
-    if (json.processed && json.processed.except) {
-        throw new RpcError(json);
-    }
+expect(Object.keys(json)).toContain('transaction_id');
+```
 
-    expect(Object.keys(json)).toContain('transaction_id');
+# accountHash - Hashes public key to an on-chain Fio account name
+
+```js
+Fio.accountHash('EOS7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8')
+// '5kmx4qbqlpld'
+```
+
+# createDiffieCipher - Encrypted Messages
+
+Alice sends a new_funds_request to Bob.  In the `new_funds_request` there is a
+`content` field.  The `content` field is encrypted by Alice and decrypted by Bob.
+
+```js
+newFundsContent = {
+    payee_public_address: 'purse.alice',
+    amount: '1',
+    token_code: 'fio.reqobt',
+    memo: null,
+    hash: null,
+    offline_url: null
+}
+
+privateKeyAlice = Ecc.PrivateKey.fromSeed('alice');
+publicKeyAlice = privateKeyAlice.toPublic();
+privateKeyBob = Ecc.PrivateKey.fromSeed('bob');
+publicKeyBob = privateKeyBob.toPublic();
+
+cipherAlice = Fio.createDiffieCipher(privateKeyAlice, publicKeyBob, new TextEncoder(), new TextDecoder());
+cipherAliceHex = cipherAlice.encrypt('new_funds_content', newFundsContent);
+
+// Alice sends cipherAliceHex to Bob view new_funds_request
+
+cipherBob = Fio.createDiffieCipher(privateKeyBob, publicKeyAlice, new TextEncoder(), new TextDecoder());
+newFundsContentBob = cipherBob.decrypt('new_funds_content', cipherAliceHex);
+expect(newFundsContentBob).toEqual(newFundsContent);
+```
+
+See `src/encryption-fio.abi.json` for other message types like `new_funds_content`.

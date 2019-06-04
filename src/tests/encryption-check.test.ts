@@ -1,4 +1,6 @@
-import {checkEncrypt, checkDecrypt} from '../encryption'
+import {checkEncrypt, checkDecrypt} from '../encryption-check'
+
+const randomBytes = require('randombytes');
 
 const secret = Buffer.from('02332627b9325cb70510a70f0f6be4bcb008fbbc7893ca51dedf5bf46aa740c0fc9d3fbd737d09a3c4046d221f4f1a323f515332c3fef46e7f075db561b1a2c9', 'hex');
 const plaintext = Buffer.from('secret message');
@@ -29,8 +31,9 @@ describe('Encryption', () => {
     })
 
     it('Random IV', function() {
-        const c = checkEncrypt(secret, plaintext);
+        const message = Buffer.from(randomBytes(32));
+        const c = checkEncrypt(secret, message);
         const p = checkDecrypt(secret, c);
-        expect(p).toEqual(plaintext);
+        expect(p).toEqual(message);
     })
 })
