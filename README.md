@@ -33,8 +33,9 @@ cleos transfer eosio.token bob '1000 SYS'
 cleos transfer eosio.token alice '1000 SYS'
 ```
 
-# prepareTransaction - client-side serialization and signing
-This is a full example that includes the external RPC code you plan to use outside of the `Fio` instance:
+# prepareTransaction
+
+Client-side serialization and signing.  This is a full example that includes the external RPC code you plan to use outside of the `Fio` instance:
 ```js
 info = await rpc.get_info();
 blockInfo = await rpc.get_block(info.last_irreversible_block_num);
@@ -83,14 +84,18 @@ if (json.processed && json.processed.except) {
 expect(Object.keys(json)).toContain('transaction_id');
 ```
 
-# accountHash - Hashes public key to an on-chain Fio account name
+# accountHash
+
+Hashes public key to an on-chain Fio account name.
 
 ```js
-Fio.accountHash('EOS7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8')
-// '5kmx4qbqlpld'
+const accountHash = Fio.accountHash('EOS7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8');
+expect(accountHash).toEqual('5kmx4qbqlpld');
 ```
 
-# createDiffieCipher - Encrypted Messages
+# createDiffieCipher
+
+Encrypted Messages
 
 Alice sends a new_funds_request to Bob.  In the `new_funds_request` there is a
 `content` field.  The `content` field is encrypted by Alice and decrypted by Bob.
@@ -110,12 +115,12 @@ publicKeyAlice = privateKeyAlice.toPublic();
 privateKeyBob = Ecc.PrivateKey.fromSeed('bob');
 publicKeyBob = privateKeyBob.toPublic();
 
-cipherAlice = Fio.createDiffieCipher(privateKeyAlice, publicKeyBob, new TextEncoder(), new TextDecoder());
+cipherAlice = Fio.createDiffieCipher({privateKey: privateKeyAlice, publicKey: publicKeyBob, textEncoder: new TextEncoder(), textDecoder: new TextDecoder()});
 cipherAliceHex = cipherAlice.encrypt('new_funds_content', newFundsContent);
 
 // Alice sends cipherAliceHex to Bob via new_funds_request
 
-cipherBob = Fio.createDiffieCipher(privateKeyBob, publicKeyAlice, new TextEncoder(), new TextDecoder());
+cipherBob = Fio.createDiffieCipher({privateKey: privateKeyBob, publicKey: publicKeyAlice, textEncoder: new TextEncoder(), textDecoder: new TextDecoder()});
 newFundsContentBob = cipherBob.decrypt('new_funds_content', cipherAliceHex);
 expect(newFundsContentBob).toEqual(newFundsContent);
 ```
