@@ -110,10 +110,10 @@ newFundsContent = {
     offline_url: null
 }
 
-privateKeyAlice = Ecc.PrivateKey.fromSeed('alice');
-publicKeyAlice = privateKeyAlice.toPublic();
-privateKeyBob = Ecc.PrivateKey.fromSeed('bob');
-publicKeyBob = privateKeyBob.toPublic();
+privateKeyAlice = '5J9bWm2ThenDm3tjvmUgHtWCVMUdjRR1pxnRtnJjvKA4b2ut5WK';
+publicKeyAlice = 'EOS7zsqi7QUAjTAdyynd6DVe8uv4K8gCTRHnAoMN9w9CA1xLCTDVv';
+privateKeyBob = '5JoQtsKQuH8hC9MyvfJAqo6qmKLm8ePYNucs7tPu2YxG12trzBt';
+publicKeyBob = 'EOS5VE6Dgy9FUmd1mFotXwF88HkQN1KysCWLPqpVnDMjRvGRi1YrM';
 
 cipherAlice = Fio.createDiffieCipher({privateKey: privateKeyAlice, publicKey: publicKeyBob, textEncoder: new TextEncoder(), textDecoder: new TextDecoder()});
 cipherAliceHex = cipherAlice.encrypt('new_funds_content', newFundsContent);
