@@ -39,7 +39,9 @@ class DiffieCipher {
 
         @arg {string} fioContentType - `new_funds_content`, etc
         @arg {object} content
-        @arg {Buffer} [IV = randomBytes(16)] - unit tests may provide this value
+        @arg {Buffer} [IV = randomBytes(16)] - An unpredictable strong random value
+            is required and supplied by default.  Unit tests may provide a static value
+            to achieve predictable results.
         @return {string} cipher hex
     */
     encrypt(fioContentType: string, content: any, IV? : Buffer) : string {

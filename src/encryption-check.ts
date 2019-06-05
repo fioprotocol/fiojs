@@ -8,15 +8,19 @@ const createHmac = require('create-hmac')
 const createHash = require('create-hash')
 
 /**
-    AES-based encryption with HMAC.
+    Provides AES-256-CBC encryption and message authentication. The CBC cipher is
+    used for good platform native compatability.
 
-    The CBC cipher has good platform native compatability.
+    @see https://security.stackexchange.com/a/63134
+    @see https://security.stackexchange.com/a/20493
 
     @arg {Buffer} secret - See PrivateKey.getSharedSecret()
     @arg {Buffer} message - plaintext
-    @arg {Buffer} [IV = randomBytes(16)] - Unit tests may provide this value
+    @arg {Buffer} [IV = randomBytes(16)] - An unpredictable strong random value
+        is required and supplied by default.  Unit tests may provide a static value
+        to achieve predictable results.
 
-    @see https://security.stackexchange.com/a/63134
+    @throws {Error} IV must be 16 bytes
 */
 export function checkEncrypt(secret: Buffer, message: Buffer, IV?: Buffer) : Buffer {
     const K = createHash('sha512').update(secret).digest();
@@ -33,20 +37,19 @@ export function checkEncrypt(secret: Buffer, message: Buffer, IV?: Buffer) : Buf
     // Cipher performs PKCS#5 padded automatically
     const cipher = crypto.createCipheriv('aes-256-cbc', Ke, IV);
     const C = Buffer.concat([cipher.update(message), cipher.final()]);
+    // Include in the HMAC input everything that impacts the decryption
     const M = createHmac('sha256', Km).update(Buffer.concat([IV, C])).digest(); // AuthTag
 
     return Buffer.concat([IV, C, M]);
 }
 
 /**
-    AES-based decryption with HMAC.
-
-    The CBC cipher has good platform native compatability.
+    Provides AES-256-CBC message authentication then decryption.
 
     @arg {Buffer} secret - See PrivateKey.getSharedSecret()
-    @arg {Buffer} message - ciphertext
+    @arg {Buffer} message - ciphertext (from checkEncrypt)
 
-    @see https://security.stackexchange.com/a/63134
+    @throws {Error} decrypt failed
 */
 export function checkDecrypt(secret: Buffer, message: Buffer) : Buffer {
     const K = createHash('sha512').update(secret).digest();
