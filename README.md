@@ -16,6 +16,8 @@ npm install -g typescript
 # Import
 ```js
 const { Fio, Ecc } = require('fiojs');
+
+// Include textDecoder and textEncoder when using in Node, React Native, IE11 or Edge Browsers.
 const { TextEncoder, TextDecoder } = require('util');                   // node only; native TextEncoder/Decoder
 const { TextEncoder, TextDecoder } = require('text-encoding');          // React Native, IE11, and Edge Browsers only
 ```
