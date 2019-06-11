@@ -32,7 +32,7 @@ A message authentication code (MAC) is calculated after encryption (referred to 
 
 The HMAC allows the decrypting algorithm to know if the wrong key was used to decrypt the message.  It also makes the message tamper-resistant because an attacker who can access encrypted data can modify the bytes, thereby impacting the cleartext data (though the encryption makes the task a bit harder for the attacker). Without the HMAC, the decrypted plaintext must be inspected and a guess must be made to know if decryption failed also leaving the opportunity for a modification to slip by.
 
-### Implementation
+# Implementation
 
 Message encryption: `src/encryption-check.ts` and `src/tests/encryption-check.test.ts`
 
