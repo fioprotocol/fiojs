@@ -3,6 +3,6 @@
  */
 import { prepareTransaction } from './transaction';
 import { accountHash } from './accountname';
-import { createDiffieCipher } from './encryption-fio';
+import { createSharedCipher } from './encryption-fio';
 
-export { prepareTransaction, accountHash, createDiffieCipher };
+export { prepareTransaction, accountHash, createSharedCipher };

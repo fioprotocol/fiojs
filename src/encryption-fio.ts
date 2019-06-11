@@ -16,14 +16,14 @@ export function deserialize(serialBuffer: ser.SerialBuffer, type: string): any {
     return fioTypes.get(type).deserialize(serialBuffer);
 }
 
-export function createDiffieCipher({privateKey, publicKey, textEncoder, textDecoder} = {} as {privateKey: any, publicKey: any, textEncoder? : TextEncoder, textDecoder? : TextDecoder}) : DiffieCipher {
+export function createSharedCipher({privateKey, publicKey, textEncoder, textDecoder} = {} as {privateKey: any, publicKey: any, textEncoder? : TextEncoder, textDecoder? : TextDecoder}) : SharedCipher {
     privateKey = PrivateKey(privateKey);
     publicKey = PublicKey(publicKey);
     const sharedSecret = privateKey.getSharedSecret(publicKey);
-    return new DiffieCipher({sharedSecret, textEncoder, textDecoder});
+    return new SharedCipher({sharedSecret, textEncoder, textDecoder});
 }
 
-class DiffieCipher {
+class SharedCipher {
     sharedSecret : Buffer;
     textEncoder? : TextEncoder;
     textDecoder? : TextDecoder;

@@ -2,7 +2,7 @@ import { TextDecoder, TextEncoder } from 'text-encoding';
 import * as ser from '../chain-serialize';
 
 const { PrivateKey } = require('../ecc');
-const { serialize, deserialize, createDiffieCipher } = require('../encryption-fio');
+const { serialize, deserialize, createSharedCipher } = require('../encryption-fio');
 
 const textEncoder: TextEncoder = new TextEncoder();
 const textDecoder: TextDecoder = new TextDecoder();
@@ -42,21 +42,21 @@ describe('Encryption FIO', () => {
         const newFundsContentCipherHex = 'f300888ca4f512cebdc0020ff0f7224c0db2984c4ad9afb12629f01a8c6a76328bbde17405655dc4e3cb30dad272996fb1dea8e662e640be193e25d41147a904c571b664a7381ab41ef062448ac1e205';
 
         it('encrypt', function() {
-            const cipherAlice = createDiffieCipher({privateKey: privateKeyAlice, publicKey: publicKeyBob, textEncoder, textDecoder});
+            const cipherAlice = createSharedCipher({privateKey: privateKeyAlice, publicKey: publicKeyBob, textEncoder, textDecoder});
             const cipherAliceHex = cipherAlice.encrypt('new_funds_content', newFundsContent, IV);
             expect(cipherAliceHex).toEqual(newFundsContentCipherHex);
 
-            const cipherBob = createDiffieCipher({privateKey: privateKeyBob, publicKey: publicKeyAlice, textEncoder, textDecoder});
+            const cipherBob = createSharedCipher({privateKey: privateKeyBob, publicKey: publicKeyAlice, textEncoder, textDecoder});
             const cipherBobHex = cipherBob.encrypt('new_funds_content', newFundsContent, IV);
             expect(cipherBobHex).toEqual(newFundsContentCipherHex);
         })
 
         it('decrypt', function() {
-            const cipherAlice = createDiffieCipher({privateKey: privateKeyAlice, publicKey: publicKeyBob, textEncoder, textDecoder});
+            const cipherAlice = createSharedCipher({privateKey: privateKeyAlice, publicKey: publicKeyBob, textEncoder, textDecoder});
             const newFundsContentAlice = cipherAlice.decrypt('new_funds_content', newFundsContentCipherHex);
             expect(newFundsContentAlice).toEqual(newFundsContent);
 
-            const cipherBob = createDiffieCipher({privateKey: privateKeyBob, publicKey: publicKeyAlice, textEncoder, textDecoder});
+            const cipherBob = createSharedCipher({privateKey: privateKeyBob, publicKey: publicKeyAlice, textEncoder, textDecoder});
             const newFundsContentBob = cipherBob.decrypt('new_funds_content', newFundsContentCipherHex);
             expect(newFundsContentBob).toEqual(newFundsContent);
         })

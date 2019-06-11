@@ -93,7 +93,7 @@ const accountHash = Fio.accountHash('EOS7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7F
 expect(accountHash).toEqual('5kmx4qbqlpld');
 ```
 
-# createDiffieCipher
+# createSharedCipher
 
 Encrypted Messages
 
@@ -115,12 +115,12 @@ publicKeyAlice = 'EOS7zsqi7QUAjTAdyynd6DVe8uv4K8gCTRHnAoMN9w9CA1xLCTDVv';
 privateKeyBob = '5JoQtsKQuH8hC9MyvfJAqo6qmKLm8ePYNucs7tPu2YxG12trzBt';
 publicKeyBob = 'EOS5VE6Dgy9FUmd1mFotXwF88HkQN1KysCWLPqpVnDMjRvGRi1YrM';
 
-cipherAlice = Fio.createDiffieCipher({privateKey: privateKeyAlice, publicKey: publicKeyBob, textEncoder: new TextEncoder(), textDecoder: new TextDecoder()});
+cipherAlice = Fio.createSharedCipher({privateKey: privateKeyAlice, publicKey: publicKeyBob, textEncoder: new TextEncoder(), textDecoder: new TextDecoder()});
 cipherAliceHex = cipherAlice.encrypt('new_funds_content', newFundsContent);
 
 // Alice sends cipherAliceHex to Bob via new_funds_request
 
-cipherBob = Fio.createDiffieCipher({privateKey: privateKeyBob, publicKey: publicKeyAlice, textEncoder: new TextEncoder(), textDecoder: new TextDecoder()});
+cipherBob = Fio.createSharedCipher({privateKey: privateKeyBob, publicKey: publicKeyAlice, textEncoder: new TextEncoder(), textDecoder: new TextDecoder()});
 newFundsContentBob = cipherBob.decrypt('new_funds_content', cipherAliceHex);
 expect(newFundsContentBob).toEqual(newFundsContent);
 ```
