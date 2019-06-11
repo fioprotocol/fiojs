@@ -97,10 +97,7 @@ expect(accountHash).toEqual('5kmx4qbqlpld');
 
 # createSharedCipher
 
-Encrypted Messages
-
-Alice sends a new_funds_request to Bob.  In the `new_funds_request` there is a
-`content` field.  The `content` field is encrypted by Alice and decrypted by Bob.
+The shared cipher class contains a secret used to encrypt and decrypt messages.  For example, Alice sends a new_funds_request to Bob.  In the `new_funds_request` there is a `content` field.  The `content` field is encrypted by Alice and decrypted by Bob.
 
 ```js
 newFundsContent = {
@@ -128,3 +125,6 @@ expect(newFundsContentBob).toEqual(newFundsContent);
 ```
 
 See `src/encryption-fio.abi.json` for other message types like `new_funds_content`.
+
+# Message Encryption
+See `docs/message_encryption.md`
