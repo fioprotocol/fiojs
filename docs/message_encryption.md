@@ -4,7 +4,7 @@ The following methods are used to encrypt and decrypt FIO messages for storage o
 ### Shared Secret
 Diffie Hellman shared secret per the Elliptic Curve Integrated Encryption Scheme (ECIES) is used to create one key used for encryption and decryption (the shared secret). Both the sender and recipient can create this shared-secret using their FIO private active key and the other parties' FIO public active key.
 
-```js
+```bash
 > bob_private=Fio.Ecc.seedPrivate('bob')
 '5JoQtsKQuH8hC9MyvfJAqo6qmKLm8ePYNucs7tPu2YxG12trzBt'
 
