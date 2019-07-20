@@ -1,7 +1,7 @@
 {
-  "name": "fiojs",
-  "version": "1.0.0",
-  "description": "Talk to fio API",
+  "name": "@dapix/fiojs",
+  "version": "0.1.0",
+  "description": "The fioJS handles the packing and signing logic for the FIO blockchain.  It is used by the FIO typescript_sdk",
   "main": "dist/index.js",
   "scripts": {
     "cypress": "./scripts/run-cypress.sh",
@@ -21,12 +21,8 @@
     "docs-serve": "python -m SimpleHTTPServer",
     "docs-publish": "sh .docs/scripts/publish.sh"
   },
-  "author": "dapixio",
+  "author": "shawn@dapix.io",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dapixio/fiojs.git"
-  },
   "dependencies": {
     "ajv": "^6.10.2",
     "babel-runtime": "6.26.0",
