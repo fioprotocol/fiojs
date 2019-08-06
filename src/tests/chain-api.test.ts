@@ -1,7 +1,9 @@
 import { TextDecoder, TextEncoder } from 'text-encoding';
+
 import { Api, signAllAuthorityProvider } from '../chain-api';
-import { JsonRpc } from './chain-jsonrpc';
 import { JsSignatureProvider } from '../chain-jssig';
+
+import { JsonRpc } from './chain-jsonrpc';
 
 const transaction = {
     expiration: '2018-09-04T18:42:49',
@@ -24,7 +26,7 @@ const transaction = {
             data: {
                 from: 'thegazelle',
                 to: 'remasteryoda',
-                quantity: '1.0000 EOS',
+                quantity: '1.0000 FIO',
                 memo: 'For a secure future.',
             },
             hex_data: `00808a517dc354cb6012f557656ca4ba102700000000000004454f530000000014466f722
@@ -42,7 +44,7 @@ const transaction = {
             data: {
                 from: 'thegazelle',
                 to: 'remasteryoda',
-                quantity: '2.0000 EOS',
+                quantity: '2.0000 FIO',
                 memo: 'For a second secure future (multiverse?)',
             },
             hex_data: `00808a517dc354cb6012f557656ca4ba204e00000000000004454f530000000028466f722061207365636f6e642073656
@@ -107,7 +109,7 @@ const deserializedActions = [
         data: {
             from: 'thegazelle',
             memo: 'For a secure future.',
-            quantity: '1.0000 EOS',
+            quantity: '1.0000 FIO',
             to: 'remasteryoda',
         },
         name: 'transfer',
@@ -118,7 +120,7 @@ const deserializedActions = [
         data: {
             from: 'thegazelle',
             memo: 'For a second secure future (multiverse?)',
-            quantity: '2.0000 EOS',
+            quantity: '2.0000 FIO',
             to: 'remasteryoda',
         },
         name: 'transfer',

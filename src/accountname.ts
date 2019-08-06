@@ -2,22 +2,23 @@
  * @module AccountName
  */
 import * as bs58 from 'bs58';
+
 import * as Long from 'long';
 
 const { PublicKey } = require('./ecc');
 
 /**
-    Hashes a public key to a valid EOSIO account name.
+    Hashes a public key to a valid FIOIO account name.
 
     @arg {string} pubkey
-    @return {string} valid EOSIO account name
+    @return {string} valid FIOIO account name
 */
 export function accountHash(pubkey : string) : string {
-    if(!PublicKey.isValid(pubkey, 'EOS')) {
+    if(!PublicKey.isValid(pubkey, 'FIO')) {
         throw new TypeError('invalid public key');
     }
 
-    pubkey = pubkey.substring('EOS'.length, pubkey.length);
+    pubkey = pubkey.substring('FIO'.length, pubkey.length);
 
     const decoded58 = bs58.decode(pubkey);
     const long = shortenKey(decoded58);

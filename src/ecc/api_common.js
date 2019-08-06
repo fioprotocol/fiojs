@@ -9,7 +9,7 @@ const hash = require("./hash")
     @typedef {string} wif
 */
 /**
-    EOSKey..
+    FIOKey..
     @typedef {string} pubkey
 */
 
@@ -44,7 +44,7 @@ const ecc = {
         @example
 ecc.randomKey().then(privateKey => {
   console.log('Private Key:\t', privateKey) // wif
-  console.log('Public Key:\t', ecc.privateToPublic(privateKey)) // EOSkey...
+  console.log('Public Key:\t', ecc.privateToPublic(privateKey)) // FIOkey...
 })
     */
     randomKey: (cpuEntropyBits) => (
@@ -64,24 +64,24 @@ ecc.randomKey().then(privateKey => {
 
     /**
         @arg {wif} wif
-        @arg {string} [pubkey_prefix = 'EOS'] - public key prefix
+        @arg {string} [pubkey_prefix = 'FIO'] - public key prefix
 
         @return {pubkey}
 
         @example ecc.privateToPublic(wif) === pubkey
     */
-    privateToPublic: (wif, pubkey_prefix = 'EOS') =>
+    privateToPublic: (wif, pubkey_prefix = 'FIO') =>
       PrivateKey(wif).toPublic().toString(pubkey_prefix),
 
     /**
-        @arg {pubkey} pubkey - like EOSKey..
-        @arg {string} [pubkey_prefix = 'EOS']
+        @arg {pubkey} pubkey - like FIOKey..
+        @arg {string} [pubkey_prefix = 'FIO']
 
         @return {boolean} valid
 
         @example ecc.isValidPublic(pubkey) === true
     */
-    isValidPublic: (pubkey, pubkey_prefix = 'EOS') =>
+    isValidPublic: (pubkey, pubkey_prefix = 'FIO') =>
       PublicKey.isValid(pubkey, pubkey_prefix),
 
     /**
@@ -156,7 +156,7 @@ ecc.randomKey().then(privateKey => {
     /**
         Recover the public key used to create the signature.
 
-        @arg {String|Buffer} signature (EOSbase58sig.., Hex, Buffer)
+        @arg {String|Buffer} signature (FIObase58sig.., Hex, Buffer)
         @arg {String|Buffer} data - full data
         @arg {String} [encoding = 'utf8'] - data encoding (if data is a string)
 
@@ -177,7 +177,7 @@ ecc.randomKey().then(privateKey => {
     },
 
     /**
-        @arg {String|Buffer} signature (EOSbase58sig.., Hex, Buffer)
+        @arg {String|Buffer} signature (FIObase58sig.., Hex, Buffer)
         @arg {String|Buffer} dataSha256 - sha256 hash 32 byte buffer or hex string
         @arg {String} [encoding = 'hex'] - dataSha256 encoding (if dataSha256 is a string)
 
