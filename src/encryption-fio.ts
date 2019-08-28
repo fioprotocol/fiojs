@@ -3,6 +3,7 @@ import * as ser from './chain-serialize';
 
 const {PublicKey, PrivateKey} = require('./ecc');
 const fioAbi = require('../src/encryption-fio.abi.json');
+const createHmac = require('create-hmac')
 
 const fioTypes = ser.getTypesFromAbi(ser.createInitialTypes(), fioAbi);
 
@@ -65,5 +66,10 @@ class SharedCipher {
         const messageArray = Uint8Array.from(message);
         const buffer = new ser.SerialBuffer({ array: messageArray, textEncoder: this.textEncoder, textDecoder: this.textDecoder });
         return deserialize(buffer, fioContentType);
+    }
+
+    hashA(message: Buffer) : Buffer {
+        const hash = createHmac('sha1', this.sharedSecret).update(message).digest()
+        return hash.slice(0, 11).toString('hex')
     }
 }

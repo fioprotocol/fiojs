@@ -60,6 +60,15 @@ describe('Encryption FIO', () => {
             const newFundsContentBob = cipherBob.decrypt('new_funds_content', newFundsContentCipherHex);
             expect(newFundsContentBob).toEqual(newFundsContent);
         })
+
+        it('hashA', function() {
+            const privateKey = PrivateKey.fromSeed('')
+            const publicKey = privateKey.toPublic()
+            const cipher = createSharedCipher({privateKey, publicKey})
+            expect(cipher.hashA('')).toEqual('7a5de2d59c72b94c67a192')
+            expect(cipher.hashA(Buffer.from(''))).toEqual('7a5de2d59c72b94c67a192')
+            expect(cipher.hashA(publicKey.toBuffer())).toEqual('2521bccef77d48793a7a80')
+        })
     })
 
 })
