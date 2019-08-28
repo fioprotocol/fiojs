@@ -68,8 +68,14 @@ class SharedCipher {
         return deserialize(buffer, fioContentType);
     }
 
-    hashA(message: Buffer) : Buffer {
-        const hash = createHmac('sha1', this.sharedSecret).update(message).digest()
-        return hash.slice(0, 11).toString('hex')
+    /**
+        @example hashA(PublicKey.toBuffer())
+        @arg {string|Buffer} key buffer
+        @return {string} hex, one-way hash unique to this SharedCipher and key
+    */
+    hashA(key: Buffer) : Buffer {
+        const hash = createHmac('sha1', this.sharedSecret).update(key).digest()
+        // At 12 bytes and 3.9 billion connections there is a collision probability of 1 and 1 billion
+        return hash.slice(0, 12).toString('hex')
     }
 }
