@@ -75,7 +75,6 @@ class SharedCipher {
     */
     hashA(key: Buffer) : Buffer {
         const hash = createHmac('sha1', this.sharedSecret).update(key).digest()
-        // At 12 bytes and 3.9 billion connections there is a collision probability of 1 and 1 billion
-        return hash.slice(0, 12).toString('hex')
+        return hash.slice(0, 16).toString('hex')
     }
 }

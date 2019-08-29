@@ -65,9 +65,9 @@ describe('Encryption FIO', () => {
             const privateKey = PrivateKey.fromSeed('')
             const publicKey = privateKey.toPublic()
             const cipher = createSharedCipher({privateKey, publicKey})
-            expect(cipher.hashA('')).toEqual('7a5de2d59c72b94c67a192a9')
-            expect(cipher.hashA(Buffer.from(''))).toEqual('7a5de2d59c72b94c67a192a9')
-            expect(cipher.hashA(publicKey.toBuffer())).toEqual('2521bccef77d48793a7a8071')
+            expect(cipher.hashA('')).toEqual('7a5de2d59c72b94c67a192a9009484ef')
+            expect(cipher.hashA(Buffer.from(''))).toEqual('7a5de2d59c72b94c67a192a9009484ef')
+            expect(cipher.hashA(publicKey.toBuffer())).toEqual('2521bccef77d48793a7a80716e79a46d')
         })
     })
 
