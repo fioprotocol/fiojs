@@ -73,8 +73,8 @@ class SharedCipher {
         @arg {string|Buffer} key buffer
         @return {string} hex, one-way hash unique to this SharedCipher and key
     */
-    hashA(key: Buffer) : Buffer {
+    hashA(key: Buffer) : String {
         const hash = createHmac('sha1', this.sharedSecret).update(key).digest()
-        return hash.slice(0, 16).toString('hex')
+        return '0x' + hash.slice(0, 16).toString('hex')
     }
 }
