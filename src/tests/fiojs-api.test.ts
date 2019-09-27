@@ -24,7 +24,7 @@ const transaction = {
             data: {
                 from: 'thegazelle',
                 to: 'remasteryoda',
-                quantity: '1.0000 EOS',
+                quantity: '1.0000 FIO',
                 memo: 'For a secure future.',
             },
         }
@@ -32,7 +32,7 @@ const transaction = {
     transaction_extensions: [] as any,
 };
 
-const preparedTransactionResult = {"signatures":["SIG_K1_Jxz8NJNoatNQ4HtP5y6SuKZyknjsnRpmzLvW9V6dZRZfS4QhM7dYnQSjteo736T7MoEdiVn99raVU8AbrEsU8U3g4QkKeg"],"compression":0,"packed_context_free_data":"","packed_trx":"29d28e5bd0948b2e1f1e00000000013015a4195395b1ca000000572d3ccdcd0100808a517dc354cb00000000a8ed32323500808a517dc354cb6012f557656ca4ba102700000000000004454f530000000014466f72206120736563757265206675747572652e00"};
+const preparedTransactionResult = {"signatures":["SIG_K1_KWkhnM37vJF83QYgStN8z5wyKVcpa6RCKNsvy6mbF46TBksYXVgP4u4Zv3EZc7pH7aUoUL52zuE5vtuWeCUSfVF1MzdsmS"],"compression":0,"packed_context_free_data":"","packed_trx":"29d28e5bd0948b2e1f1e00000000013015a4195395b1ca000000572d3ccdcd0100808a517dc354cb00000000a8ed32323500808a517dc354cb6012f557656ca4ba10270000000000000446494f0000000014466f72206120736563757265206675747572652e00"};
 
 describe('FIO', () => {
     it('prepares transaction', async function() {

@@ -15,5 +15,5 @@
   "readme": "README.md",
   "hideGenerator": "true",
   "verbose": true,
-  "mdSourceRepo": "https://www.github.com/EOSIO/eosjs"
+  "mdSourceRepo": "https://www.github.com/FIOIO/eosjs"
 }

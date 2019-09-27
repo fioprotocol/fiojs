@@ -28,7 +28,7 @@ The `npm run test-node` target needs a node with a specific key with Bob and Ali
 
 ```bash
 #test_privkey=5JuH9fCXmU3xbj8nRmhPZaVrxxXrdPaRmZLW1cznNTmTQR2Kg5Z
-test_pubkey=EOS7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8
+test_pubkey=FIO7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8
 cleos create account eosio bob $test_pubkey
 cleos create account eosio alice $test_pubkey
 cleos transfer eosio.token bob '1000 SYS'
@@ -91,7 +91,7 @@ expect(Object.keys(json)).toContain('transaction_id');
 Hashes public key to an on-chain Fio account name.
 
 ```js
-const accountHash = Fio.accountHash('EOS7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8');
+const accountHash = Fio.accountHash('FIO7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8');
 expect(accountHash).toEqual('5kmx4qbqlpld');
 ```
 
@@ -110,9 +110,9 @@ newFundsContent = {
 }
 
 privateKeyAlice = '5J9bWm2ThenDm3tjvmUgHtWCVMUdjRR1pxnRtnJjvKA4b2ut5WK';
-publicKeyAlice = 'EOS7zsqi7QUAjTAdyynd6DVe8uv4K8gCTRHnAoMN9w9CA1xLCTDVv';
+publicKeyAlice = 'FIO7zsqi7QUAjTAdyynd6DVe8uv4K8gCTRHnAoMN9w9CA1xLCTDVv';
 privateKeyBob = '5JoQtsKQuH8hC9MyvfJAqo6qmKLm8ePYNucs7tPu2YxG12trzBt';
-publicKeyBob = 'EOS5VE6Dgy9FUmd1mFotXwF88HkQN1KysCWLPqpVnDMjRvGRi1YrM';
+publicKeyBob = 'FIO5VE6Dgy9FUmd1mFotXwF88HkQN1KysCWLPqpVnDMjRvGRi1YrM';
 
 cipherAlice = Fio.createSharedCipher({privateKey: privateKeyAlice, publicKey: publicKeyBob, textEncoder: new TextEncoder(), textDecoder: new TextDecoder()});
 cipherAliceHex = cipherAlice.encrypt('new_funds_content', newFundsContent);

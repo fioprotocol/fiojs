@@ -91,13 +91,14 @@ const serializedActions = [
     {
         account: 'testeostoken',
         authorization: [{ actor: 'thegazelle', permission: 'active' }],
-        data: "00808A517DC354CB6012F557656CA4BA102700000000000004454F530000000014466F72206120736563757265206675747572652E", // tslint:disable-line
+               
+        data: "00808A517DC354CB6012F557656CA4BA10270000000000000446494F0000000014466F72206120736563757265206675747572652E", // tslint:disable-line
         name: 'transfer',
     },
     {
         account: 'testeostoken',
         authorization: [{ actor: 'thegazelle', permission: 'active' }],
-        data: "00808A517DC354CB6012F557656CA4BA204E00000000000004454F530000000028466F722061207365636F6E64207365637572652066757475726520286D756C746976657273653F29", // tslint:disable-line
+        data: "00808A517DC354CB6012F557656CA4BA204E0000000000000446494F0000000028466F722061207365636F6E64207365637572652066757475726520286D756C746976657273653F29", // tslint:disable-line
         name: 'transfer',
     },
 ];
@@ -179,7 +180,7 @@ describe('chain-api', () => {
 
     it('serializeActions converts actions to hex', async () => {
         const response = await api.serializeActions(transaction.actions);
-
+        
         expect(response).toEqual(serializedActions);
     });
 
