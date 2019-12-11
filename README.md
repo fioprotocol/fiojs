@@ -1,21 +1,30 @@
 # fiojs
 FIO JS Library
 
-# How to install/setup
+# How to install/setup - manually
 ```js
 npm install
 tsc
 ```
+
+# Import
+```js
+const { Fio, Ecc } = require('fiojs');
+
+# Via NPM
+FIO JS is available via npm js here:
+@fioprotocol/fiojs
+
+npm install @fioprotocol/fiojs
+
+# Import if NOT installing manually and using NPM package manager
+const { Fio, Ecc } = require('@fioprotocol/fiojs');
 
 # Errors Installing?
 if you don’t have tsc, install it:
 ```js
 npm install -g typescript
 ```
-
-# Import
-```js
-const { Fio, Ecc } = require('fiojs');
 
 // Include textDecoder and textEncoder when using in Node, React Native, IE11 or Edge Browsers.
 const { TextEncoder, TextDecoder } = require('util');                   // node only; native TextEncoder/Decoder

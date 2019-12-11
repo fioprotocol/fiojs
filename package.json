@@ -1,7 +1,7 @@
 {
-  "name": "@dapix/fiojs",
-  "version": "0.1.0",
-  "description": "The fioJS handles the packing and signing logic for the FIO blockchain.  It is used by the FIO typescript_sdk",
+  "name": "@fioprotocol/fiojs",
+  "version": "0.5.1",
+  "description": "FioJS handles the packing, signing and encryption functionality for the FIO blockchain.  It is used by the FIO TypeScript SDK",
   "main": "dist/index.js",
   "scripts": {
     "cypress": "./scripts/run-cypress.sh",
