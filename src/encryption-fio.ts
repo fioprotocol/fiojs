@@ -43,7 +43,7 @@ class SharedCipher {
         @arg {Buffer} [IV = randomBytes(16)] - An unpredictable strong random value
             is required and supplied by default.  Unit tests may provide a static value
             to achieve predictable results.
-        @return {string} cipher hex
+        @return {string} cipher base64
     */
     encrypt(fioContentType: string, content: any, IV? : Buffer) : string {
         const buffer = new ser.SerialBuffer({ textEncoder: this.textEncoder, textDecoder: this.textDecoder });
@@ -51,18 +51,18 @@ class SharedCipher {
         const message = Buffer.from(buffer.asUint8Array());
         const cipherbuffer = checkEncrypt(this.sharedSecret, message, IV);
         // checkDecrypt(this.sharedSecret, cipherbuffer);
-        return cipherbuffer.toString('hex')
+        return cipherbuffer.toString('base64')
     }
 
     /**
         Decrypt the content of a FIO message.
 
         @arg {string} fioContentType - `new_funds_content`, etc
-        @arg {object} content - cipher hex
+        @arg {object} content - cipher base64
         @return {object} decrypted FIO object
     */
     decrypt(fioContentType: string, content: string) : any {
-        const message = checkDecrypt(this.sharedSecret, Buffer.from(content, 'hex'));
+        const message = checkDecrypt(this.sharedSecret, Buffer.from(content, 'base64'));
         const messageArray = Uint8Array.from(message);
         const buffer = new ser.SerialBuffer({ array: messageArray, textEncoder: this.textEncoder, textDecoder: this.textDecoder });
         return deserialize(buffer, fioContentType);

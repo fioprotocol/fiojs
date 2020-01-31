@@ -8,7 +8,7 @@ const textEncoder: TextEncoder = new TextEncoder();
 const textDecoder: TextDecoder = new TextDecoder();
 
 describe('Encryption FIO', () => {
-    const newFundsContent : null|any = {
+    const newFundsContent: null|any = {
         payee_public_address: 'purse.alice',
         amount: '1',
         token_code: 'fio.reqobt',
@@ -28,8 +28,8 @@ describe('Encryption FIO', () => {
     it('deserialize', function() {
         const array = ser.hexToUint8Array(newFundsContentHex);
         const buffer = new ser.SerialBuffer({ array, textEncoder, textDecoder });
-        const newFundsContent = deserialize(buffer, 'new_funds_content');
-        expect(newFundsContent).toEqual(newFundsContent);
+        const newFundsContentRes = deserialize(buffer, 'new_funds_content');
+        expect(newFundsContentRes).toEqual(newFundsContent);
     })
 
     describe('Diffie Cipher', function () {
@@ -39,25 +39,27 @@ describe('Encryption FIO', () => {
         const publicKeyBob = privateKeyBob.toPublic();
 
         const IV = Buffer.from('f300888ca4f512cebdc0020ff0f7224c', 'hex');
-        const newFundsContentCipherHex = 'f300888ca4f512cebdc0020ff0f7224c0db2984c4ad9afb12629f01a8c6a76328bbde17405655dc4e3cb30dad272996fb1dea8e662e640be193e25d41147a904c571b664a7381ab41ef062448ac1e205';
+        const newFundsContentCipherBase64 = '8wCIjKT1Es69wAIP8PciTA2ymExK2a+xJinwGoxqdjKLveF0BWVdxOPLMNrScplvsd6o5mLmQL4ZPiXUEUepBMVxtmSnOBq0HvBiRIrB4gU=';
 
         it('encrypt', function() {
             const cipherAlice = createSharedCipher({privateKey: privateKeyAlice, publicKey: publicKeyBob, textEncoder, textDecoder});
-            const cipherAliceHex = cipherAlice.encrypt('new_funds_content', newFundsContent, IV);
-            expect(cipherAliceHex).toEqual(newFundsContentCipherHex);
+            const cipherAliceBase64 = cipherAlice.encrypt('new_funds_content', newFundsContent, IV);
+            console.log(cipherAliceBase64);
+            expect(cipherAliceBase64).toEqual(newFundsContentCipherBase64);
 
             const cipherBob = createSharedCipher({privateKey: privateKeyBob, publicKey: publicKeyAlice, textEncoder, textDecoder});
-            const cipherBobHex = cipherBob.encrypt('new_funds_content', newFundsContent, IV);
-            expect(cipherBobHex).toEqual(newFundsContentCipherHex);
+            const cipherBobBase64 = cipherBob.encrypt('new_funds_content', newFundsContent, IV);
+            console.log(cipherBobBase64);
+            expect(cipherBobBase64).toEqual(newFundsContentCipherBase64);
         })
 
         it('decrypt', function() {
             const cipherAlice = createSharedCipher({privateKey: privateKeyAlice, publicKey: publicKeyBob, textEncoder, textDecoder});
-            const newFundsContentAlice = cipherAlice.decrypt('new_funds_content', newFundsContentCipherHex);
+            const newFundsContentAlice = cipherAlice.decrypt('new_funds_content', newFundsContentCipherBase64);
             expect(newFundsContentAlice).toEqual(newFundsContent);
 
             const cipherBob = createSharedCipher({privateKey: privateKeyBob, publicKey: publicKeyAlice, textEncoder, textDecoder});
-            const newFundsContentBob = cipherBob.decrypt('new_funds_content', newFundsContentCipherHex);
+            const newFundsContentBob = cipherBob.decrypt('new_funds_content', newFundsContentCipherBase64);
             expect(newFundsContentBob).toEqual(newFundsContent);
         })
 
