@@ -11,7 +11,8 @@ describe('Encryption FIO', () => {
     const newFundsContent: null|any = {
         payee_public_address: 'purse.alice',
         amount: '1',
-        token_code: 'fio.reqobt',
+        chain_code: 'FIO',
+        token_code: 'FIO',
         memo: null,
         hash: null,
         offline_url: null
