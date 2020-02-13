@@ -14,7 +14,7 @@
             {"name": "offline_url", "type": "string?"}
         ]
     }, {
-        "name": "record_send_content",
+        "name": "record_obt_data_content",
         "base": "",
         "fields": [
             {"name": "payer_public_address", "type": "string"},
