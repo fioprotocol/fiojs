@@ -18,7 +18,7 @@ describe('Encryption FIO', () => {
         offline_url: null
     }
 
-    const newFundsContentHex = '0B70757273652E616C69636501310A66696F2E7265716F6274000000';
+    const newFundsContentHex = '0B70757273652E616C69636501310346494F0346494F000000';
 
     it('serialize', function() {
         const buffer = new ser.SerialBuffer({ textEncoder, textDecoder });
@@ -40,17 +40,15 @@ describe('Encryption FIO', () => {
         const publicKeyBob = privateKeyBob.toPublic();
 
         const IV = Buffer.from('f300888ca4f512cebdc0020ff0f7224c', 'hex');
-        const newFundsContentCipherBase64 = '8wCIjKT1Es69wAIP8PciTA2ymExK2a+xJinwGoxqdjKLveF0BWVdxOPLMNrScplvsd6o5mLmQL4ZPiXUEUepBMVxtmSnOBq0HvBiRIrB4gU=';
+        const newFundsContentCipherBase64 = '8wCIjKT1Es69wAIP8PciTOB8F09qqDGdsq0XriIWcOkqpZe9q4FwKu3SGILtnAWtJGETbcAqd3zX7NDptPUQsS1ZfEPiK6Hv0nJyNbxwiQc=';
 
         it('encrypt', function() {
             const cipherAlice = createSharedCipher({privateKey: privateKeyAlice, publicKey: publicKeyBob, textEncoder, textDecoder});
             const cipherAliceBase64 = cipherAlice.encrypt('new_funds_content', newFundsContent, IV);
-            console.log(cipherAliceBase64);
             expect(cipherAliceBase64).toEqual(newFundsContentCipherBase64);
 
             const cipherBob = createSharedCipher({privateKey: privateKeyBob, publicKey: publicKeyAlice, textEncoder, textDecoder});
             const cipherBobBase64 = cipherBob.encrypt('new_funds_content', newFundsContent, IV);
-            console.log(cipherBobBase64);
             expect(cipherBobBase64).toEqual(newFundsContentCipherBase64);
         })
 
