@@ -5,17 +5,11 @@ The following methods are used to encrypt and decrypt FIO messages for storage o
 Diffie Hellman shared secret per the Elliptic Curve Integrated Encryption Scheme (ECIES) is used to create one key used for encryption and decryption (the shared secret). Both the sender and recipient can create this shared-secret using their FIO private active key and the other parties' FIO public active key.
 
 ```bash
-> bob_private=Fio.Ecc.seedPrivate('bob')
-'5JoQtsKQuH8hC9MyvfJAqo6qmKLm8ePYNucs7tPu2YxG12trzBt'
+> bob_private='5JoQtsKQuH8hC9MyvfJAqo6qmKLm8ePYNucs7tPu2YxG12trzBt'
+> bob_public='FIO5VE6Dgy9FUmd1mFotXwF88HkQN1KysCWLPqpVnDMjRvGRi1YrM'
 
-> bob_public=Fio.Ecc.privateToPublic(bob_private)
-'FIO5VE6Dgy9FUmd1mFotXwF88HkQN1KysCWLPqpVnDMjRvGRi1YrM'
-
-> alice_private=Fio.Ecc.seedPrivate('alice')
-'5J9bWm2ThenDm3tjvmUgHtWCVMUdjRR1pxnRtnJjvKA4b2ut5WK'
-
-> alice_public=Fio.Ecc.privateToPublic(alice_private)
-'FIO7zsqi7QUAjTAdyynd6DVe8uv4K8gCTRHnAoMN9w9CA1xLCTDVv'
+> alice_private='5J9bWm2ThenDm3tjvmUgHtWCVMUdjRR1pxnRtnJjvKA4b2ut5WK'
+> alice_public='FIO7zsqi7QUAjTAdyynd6DVe8uv4K8gCTRHnAoMN9w9CA1xLCTDVv'
 
 > Fio.Ecc.PrivateKey(bob_private).getSharedSecret(alice_public)
 <Buffer a7 1b 4e c5 a9 57 79 26 a1 d2 aa 1d 9d 99 32 7f d3 b6 8f 6a 1e a5 97 20 0a 0d 89 0b d3 33 1d f3 00 a2 d4 9f ec 0b 2b 3e 69 69 ce 92 63 c5 d6 cf 47 c1 ... 14 more bytes>

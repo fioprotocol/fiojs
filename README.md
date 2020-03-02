@@ -1,23 +1,42 @@
-# fiojs
-FIO JS Library
+# FIOJS Library
+The Foundation for Interwallet Operability (FIO) is a consortium of leading blockchain wallets, exchanges and payments providers that seeks to accelerate blockchain adoption by reducing the risk, complexity, and inconvenience of sending and receiving cryptoassets.
 
-# How to install/setup - manually
-```js
-npm install
-tsc
-```
+For information on FIO, visit the [FIO website](https://fio.foundation).
 
-# Import
+For information on the FIO Chain, API, and SDKs visit the [FIO Protocol Developer Hub](https://developers.fioprotocol.io).
+
+# Technology
+The FIOJS Library is built using tsc, to generate the JavaScript files.  FIOJS is a utility/helper sdk used by the TypeScript SDK.  This utility library provides encryption, packing and signing capabilities.  Use the TypeScript SDK for FIO API support and private/public key creation.
+
+# Version 
+Visit the [FIO Protocol Developer Hub](https://developers.fioprotocol.io) to get information on FIO SDK versions. Only use an SDK that has a major version number that matches the current FIO Protocol blockchain major version number (e.g. 1.x.x).
+
+# Installing FIOJS Library, using npm:
+## The NPM Version is here:
+    @fioprotocol/fiojs
+
+# Building The FIOJS Library, manually
+#### Building FIOJS, manually
+Navigate to the "fiojs" folder, run npm to install its dependencies, then run tsc to compile. 
+    
+    cd fiojs
+    npm install
+    tsc
+    npm test (if you would like to run the unit tests)
+
+### Errors with compiling the SDKs
+#### Unable to find tsc
+Make sure to install typescript by running, this command in terminal:
+    
+    sudo npm install -g typescript
+
+# Using the SDK
+
+# Import if installing manually
 ```js
 const { Fio, Ecc } = require('fiojs');
 
-# Via NPM
-FIO JS is available via npm js here:
-@fioprotocol/fiojs
-
-npm install @fioprotocol/fiojs
-
-# Import if NOT installing manually and using NPM package manager
+# Import if using NPM package manager
 const { Fio, Ecc } = require('@fioprotocol/fiojs');
 
 # Errors Installing?
@@ -32,21 +51,11 @@ const { TextEncoder, TextDecoder } = require('text-encoding');          // React
 ```
 
 # How to Test
-The mock tests run under `npm run test` and those don't require nodeosd.. That will cover most of the changes made.
-The `npm run test-node` target needs a node with a specific key with Bob and Alice accounts. Unless your merging patches or changing something internal you may not need to run the node test at all.  You could try it on you own node with something like this:
-
-```bash
-#test_privkey=5JuH9fCXmU3xbj8nRmhPZaVrxxXrdPaRmZLW1cznNTmTQR2Kg5Z
-test_pubkey=FIO7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8
-cleos create account eosio bob $test_pubkey
-cleos create account eosio alice $test_pubkey
-cleos transfer eosio.token bob '1000 SYS'
-cleos transfer eosio.token alice '1000 SYS'
-```
+The mock tests run under `npm run test`
 
 # prepareTransaction
 
-Client-side serialization and signing.  This is a full example that includes the external RPC code you plan to use outside of the `Fio` instance:
+Client-side serialization and signing.  It is recommended that the FIO TypeScript SDK is used for FIO API calls.  But, instead, if you plan to use external RPC code. This is example RPC code, for use outside of the `Fio` JS Library instance:
 ```js
 info = await rpc.get_info();
 blockInfo = await rpc.get_block(info.last_irreversible_block_num);
@@ -55,29 +64,34 @@ timePlusTen = currentDate.getTime() + 10000;
 timeInISOString = (new Date(timePlusTen)).toISOString();
 expiration = timeInISOString.substr(0, timeInISOString.length - 1);
 
+// hash the public key of the payer/sender
+const actorAccountHash = Fio.accountHash('FIO7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8');
+expect(accountHash).toEqual('5kmx4qbqlpld');
+
+// sending 1 FIO token using the trnsfiopubkey ACTION (1 FIO token = 1,000,000,000 SUFs)
 transaction = {
     expiration,
     ref_block_num: blockInfo.block_num & 0xffff,
     ref_block_prefix: blockInfo.ref_block_prefix,
     actions: [{
-        account: 'eosio.token',
-        name: 'transfer',
+        account: 'fio.token',
+        name: 'trnsfiopubky',
         authorization: [{
-            actor: 'bob',
+            actor: actorAccountHash,
             permission: 'active',
         }],
         data: {
-            from: 'bob',
-            to: 'alice',
-            quantity: '0.0001 SYS',
-            memo: '',
+            payeePublicKey: 'FIO5VE6Dgy9FUmd1mFotXwF88HkQN1KysCWLPqpVnDMjRvGRi1YrM',
+            amount: '1000000000',
+            maxFee: 200000000,
+            technologyProviderId: ''
         },
     }]
 };
 
 abiMap = new Map()
-tokenRawAbi = await rpc.get_raw_abi('eosio.token')
-abiMap.set('eosio.token', tokenRawAbi)
+tokenRawAbi = await rpc.get_raw_abi('fio.token')
+abiMap.set('fio.token', tokenRawAbi)
 
 tx = await Fio.prepareTransaction({transaction, chainId, privateKeys, abiMap,
 textDecoder: new TextDecoder(), textEncoder: new TextEncoder()});
@@ -110,9 +124,10 @@ The shared cipher class contains a secret used to encrypt and decrypt messages. 
 
 ```js
 newFundsContent = {
-    payee_public_address: 'purse.alice',
-    amount: '1',
-    token_code: 'fio.reqobt',
+    payee_public_address: 'purse@alice',
+    amount: '1.75',
+    chain_code: 'FIO',
+    token_code: 'FIO',
     memo: null,
     hash: null,
     offline_url: null
