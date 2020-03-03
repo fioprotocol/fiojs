@@ -33,30 +33,25 @@ Make sure to install typescript by running, this command in terminal:
 # Using the SDK
 
 # Import if installing manually
-```js
 const { Fio, Ecc } = require('fiojs');
 
 # Import if using NPM package manager
 const { Fio, Ecc } = require('@fioprotocol/fiojs');
 
 # Errors Installing?
-if you don’t have tsc, install it:
-```js
+if you don’t have tsc, install it, by navigating to terminal:
 npm install -g typescript
-```
 
 // Include textDecoder and textEncoder when using in Node, React Native, IE11 or Edge Browsers.
 const { TextEncoder, TextDecoder } = require('util');                   // node only; native TextEncoder/Decoder
 const { TextEncoder, TextDecoder } = require('text-encoding');          // React Native, IE11, and Edge Browsers only
-```
 
 # How to Test
 The mock tests run under `npm run test`
 
 # prepareTransaction
-
 Client-side serialization and signing.  It is recommended that the FIO TypeScript SDK is used for FIO API calls.  But, instead, if you plan to use external RPC code. This is example RPC code, for use outside of the `Fio` JS Library instance:
-```js
+
 info = await rpc.get_info();
 blockInfo = await rpc.get_block(info.last_irreversible_block_num);
 currentDate = new Date();
@@ -107,22 +102,16 @@ if (json.processed && json.processed.except) {
 }
 
 expect(Object.keys(json)).toContain('transaction_id');
-```
 
 # accountHash
-
 Hashes public key to an on-chain Fio account name.
 
-```js
 const accountHash = Fio.accountHash('FIO7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8');
 expect(accountHash).toEqual('5kmx4qbqlpld');
-```
 
 # createSharedCipher
-
 The shared cipher class contains a secret used to encrypt and decrypt messages.  For example, Alice sends a new_funds_request to Bob.  In the `new_funds_request` there is a `content` field.  The `content` field is encrypted by Alice and decrypted by Bob.
 
-```js
 newFundsContent = {
     payee_public_address: 'purse@alice',
     amount: '1.75',
@@ -142,11 +131,9 @@ cipherAlice = Fio.createSharedCipher({privateKey: privateKeyAlice, publicKey: pu
 cipherAliceHex = cipherAlice.encrypt('new_funds_content', newFundsContent);
 
 // Alice sends cipherAliceHex to Bob via new_funds_request
-
 cipherBob = Fio.createSharedCipher({privateKey: privateKeyBob, publicKey: publicKeyAlice, textEncoder: new TextEncoder(), textDecoder: new TextDecoder()});
 newFundsContentBob = cipherBob.decrypt('new_funds_content', cipherAliceHex);
 expect(newFundsContentBob).toEqual(newFundsContent);
-```
 
 See `src/encryption-fio.abi.json` for other message types like `new_funds_content`.
 
