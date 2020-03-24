@@ -139,3 +139,9 @@ See `src/encryption-fio.abi.json` for other message types like `new_funds_conten
 
 # Message Encryption
 See `docs/message_encryption.md`
+
+## Version 1.0.0
+No changes.  Just versioning.
+
+## Version 0.9.2
+Updated Documentation.
