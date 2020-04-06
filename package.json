@@ -1,6 +1,6 @@
 {
   "name": "@fioprotocol/fiojs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "FioJS is a Utility SDK for packing, signing and encryption functionality for the FIO blockchain.  It is used by the FIO TypeScript SDK",
   "main": "dist/index.js",
   "scripts": {
