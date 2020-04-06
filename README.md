@@ -140,6 +140,9 @@ See `src/encryption-fio.abi.json` for other message types like `new_funds_conten
 # Message Encryption
 See `docs/message_encryption.md`
 
+## Version 1.0.1
+Bug Fix.  Fallback for ripemd160 in Hashing Algorithms.  Git Commit reference: 2d565b32888ad748e3d64ba04252aae97a6e031a
+
 ## Version 1.0.0
 No changes.  Just versioning.
 
