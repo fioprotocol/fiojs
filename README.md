@@ -8,7 +8,7 @@ For information on the FIO Chain, API, and SDKs visit the [FIO Protocol Develope
 # Technology
 The FIOJS Library is built using tsc, to generate the JavaScript files.  FIOJS is a utility/helper sdk used by the TypeScript SDK.  This utility library provides encryption, packing and signing capabilities.  Use the TypeScript SDK for FIO API support and private/public key creation.
 
-# Version 
+# Version
 Visit the [FIO Protocol Developer Hub](https://developers.fioprotocol.io) to get information on FIO SDK versions. Only use an SDK that has a major version number that matches the current FIO Protocol blockchain major version number (e.g. 1.x.x).
 
 # Installing FIOJS Library, using npm:
@@ -17,8 +17,8 @@ Visit the [FIO Protocol Developer Hub](https://developers.fioprotocol.io) to get
 
 # Building The FIOJS Library, manually
 #### Building FIOJS, manually
-Navigate to the "fiojs" folder, run npm to install its dependencies, then run tsc to compile. 
-    
+Navigate to the "fiojs" folder, run npm to install its dependencies, then run tsc to compile.
+
     cd fiojs
     npm install
     tsc
@@ -27,7 +27,7 @@ Navigate to the "fiojs" folder, run npm to install its dependencies, then run ts
 ### Errors with compiling the SDKs
 #### Unable to find tsc
 Make sure to install typescript by running, this command in terminal:
-    
+
     sudo npm install -g typescript
 
 # Using the SDK
@@ -80,10 +80,11 @@ transaction = {
             permission: 'active',
         }],
         data: {
-            payeePublicKey: 'FIO5VE6Dgy9FUmd1mFotXwF88HkQN1KysCWLPqpVnDMjRvGRi1YrM',
+            payee_public_key: 'FIO5VE6Dgy9FUmd1mFotXwF88HkQN1KysCWLPqpVnDMjRvGRi1YrM',
             amount: '1000000000',
-            maxFee: 200000000,
-            technologyProviderId: ''
+            max_fee: 1000000000,
+            tpid: '',
+            actor: actorAccountHash
         },
     }]
 };
