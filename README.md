@@ -56,19 +56,19 @@ The mock tests run under `npm run test`
 # prepareTransaction
 Client-side serialization and signing.  It is recommended that the FIO TypeScript SDK is used for FIO API calls.  But, instead, if you plan to use external RPC code. This is example RPC code, for use outside of the `Fio` JS Library instance:
 ```
-info = await rpc.get_info();
-blockInfo = await rpc.get_block(info.last_irreversible_block_num);
-currentDate = new Date();
-timePlusTen = currentDate.getTime() + 10000;
-timeInISOString = (new Date(timePlusTen)).toISOString();
-expiration = timeInISOString.substr(0, timeInISOString.length - 1);
+const info = await rpc.get_info();
+const blockInfo = await rpc.get_block(info.last_irreversible_block_num);
+const currentDate = new Date();
+const timePlusTen = currentDate.getTime() + 10000;
+const timeInISOString = (new Date(timePlusTen)).toISOString();
+const expiration = timeInISOString.substr(0, timeInISOString.length - 1);
 
 // hash the public key of the payer/sender
 const actorAccountHash = Fio.accountHash('FIO7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8');
 expect(accountHash).toEqual('5kmx4qbqlpld');
 
 // sending 1 FIO token using the trnsfiopubkey ACTION (1 FIO token = 1,000,000,000 SUFs)
-transaction = {
+const transaction = {
     expiration,
     ref_block_num: blockInfo.block_num & 0xffff,
     ref_block_prefix: blockInfo.ref_block_prefix,
@@ -89,19 +89,18 @@ transaction = {
     }]
 };
 
-abiMap = new Map()
-tokenRawAbi = await rpc.get_raw_abi('fio.token')
+const abiMap = new Map()
+const tokenRawAbi = await rpc.get_raw_abi('fio.token')
 abiMap.set('fio.token', tokenRawAbi)
 
-tx = await Fio.prepareTransaction({transaction, chainId, privateKeys, abiMap,
-textDecoder: new TextDecoder(), textEncoder: new TextEncoder()});
+const tx = await Fio.prepareTransaction({transaction, chainId, privateKeys, abiMap, textDecoder: new TextDecoder(), textEncoder: new TextEncoder()});
 
-pushResult = await fetch(httpEndpoint + '/v1/chain/push_transaction', {
+const pushResult = await fetch(httpEndpoint + '/v1/chain/push_transaction', {
     body: JSON.stringify(tx),
     method: 'POST',
 });
 
-json = await pushResult.json()
+const json = await pushResult.json()
 if (json.processed && json.processed.except) {
     throw new RpcError(json);
 }
