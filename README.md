@@ -8,7 +8,7 @@ For information on the FIO Chain, API, and SDKs visit the [FIO Protocol Develope
 # Technology
 The FIOJS Library is built using tsc, to generate the JavaScript files.  FIOJS is a utility/helper sdk used by the TypeScript SDK.  This utility library provides encryption, packing and signing capabilities.  Use the TypeScript SDK for FIO API support and private/public key creation.
 
-# Version 
+# Version
 Visit the [FIO Protocol Developer Hub](https://developers.fioprotocol.io) to get information on FIO SDK versions. Only use an SDK that has a major version number that matches the current FIO Protocol blockchain major version number (e.g. 1.x.x).
 
 # Installing FIOJS Library, using npm:
@@ -17,8 +17,8 @@ Visit the [FIO Protocol Developer Hub](https://developers.fioprotocol.io) to get
 
 # Building The FIOJS Library, manually
 #### Building FIOJS, manually
-Navigate to the "fiojs" folder, run npm to install its dependencies, then run tsc to compile. 
-    
+Navigate to the "fiojs" folder, run npm to install its dependencies, then run tsc to compile.
+
     cd fiojs
     npm install
     tsc
@@ -27,7 +27,7 @@ Navigate to the "fiojs" folder, run npm to install its dependencies, then run ts
 ### Errors with compiling the SDKs
 #### Unable to find tsc
 Make sure to install typescript by running, this command in terminal:
-    
+
     sudo npm install -g typescript
 
 # Publishing to Node Package Manager (npm)
@@ -48,38 +48,42 @@ Further details:
 # Using the SDK
 
 # Import if installing manually
+```
 const { Fio, Ecc } = require('fiojs');
-
+```
 # Import if using NPM package manager
+```
 const { Fio, Ecc } = require('@fioprotocol/fiojs');
-
+```
 # Errors Installing?
 if you don’t have tsc, install it, by navigating to terminal:
+```
 npm install -g typescript
-
+```
 // Include textDecoder and textEncoder when using in Node, React Native, IE11 or Edge Browsers.
+```
 const { TextEncoder, TextDecoder } = require('util');                   // node only; native TextEncoder/Decoder
 const { TextEncoder, TextDecoder } = require('text-encoding');          // React Native, IE11, and Edge Browsers only
-
+```
 # How to Test
 The mock tests run under `npm run test`
 
 # prepareTransaction
 Client-side serialization and signing.  It is recommended that the FIO TypeScript SDK is used for FIO API calls.  But, instead, if you plan to use external RPC code. This is example RPC code, for use outside of the `Fio` JS Library instance:
-
-info = await rpc.get_info();
-blockInfo = await rpc.get_block(info.last_irreversible_block_num);
-currentDate = new Date();
-timePlusTen = currentDate.getTime() + 10000;
-timeInISOString = (new Date(timePlusTen)).toISOString();
-expiration = timeInISOString.substr(0, timeInISOString.length - 1);
+```
+const info = await rpc.get_info();
+const blockInfo = await rpc.get_block(info.last_irreversible_block_num);
+const currentDate = new Date();
+const timePlusTen = currentDate.getTime() + 10000;
+const timeInISOString = (new Date(timePlusTen)).toISOString();
+const expiration = timeInISOString.substr(0, timeInISOString.length - 1);
 
 // hash the public key of the payer/sender
 const actorAccountHash = Fio.accountHash('FIO7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8');
 expect(accountHash).toEqual('5kmx4qbqlpld');
 
 // sending 1 FIO token using the trnsfiopubkey ACTION (1 FIO token = 1,000,000,000 SUFs)
-transaction = {
+const transaction = {
     expiration,
     ref_block_num: blockInfo.block_num & 0xffff,
     ref_block_prefix: blockInfo.ref_block_prefix,
@@ -91,42 +95,42 @@ transaction = {
             permission: 'active',
         }],
         data: {
-            payeePublicKey: 'FIO5VE6Dgy9FUmd1mFotXwF88HkQN1KysCWLPqpVnDMjRvGRi1YrM',
+            payee_public_key: 'FIO5VE6Dgy9FUmd1mFotXwF88HkQN1KysCWLPqpVnDMjRvGRi1YrM',
             amount: '1000000000',
-            maxFee: 200000000,
-            technologyProviderId: ''
+            max_fee: 1000000000,
+            tpid: '',
+            actor: actorAccountHash
         },
     }]
 };
 
-abiMap = new Map()
-tokenRawAbi = await rpc.get_raw_abi('fio.token')
+const abiMap = new Map()
+const tokenRawAbi = await rpc.get_raw_abi('fio.token')
 abiMap.set('fio.token', tokenRawAbi)
 
-tx = await Fio.prepareTransaction({transaction, chainId, privateKeys, abiMap,
-textDecoder: new TextDecoder(), textEncoder: new TextEncoder()});
+const tx = await Fio.prepareTransaction({transaction, chainId, privateKeys, abiMap, textDecoder: new TextDecoder(), textEncoder: new TextEncoder()});
 
-pushResult = await fetch(httpEndpoint + '/v1/chain/push_transaction', {
+const pushResult = await fetch(httpEndpoint + '/v1/chain/push_transaction', {
     body: JSON.stringify(tx),
     method: 'POST',
 });
 
-json = await pushResult.json()
+const json = await pushResult.json()
 if (json.processed && json.processed.except) {
     throw new RpcError(json);
 }
 
 expect(Object.keys(json)).toContain('transaction_id');
-
+```
 # accountHash
 Hashes public key to an on-chain Fio account name.
-
+```
 const accountHash = Fio.accountHash('FIO7bxrQUTbQ4mqcoefhWPz1aFieN4fA9RQAiozRz7FrUChHZ7Rb8');
 expect(accountHash).toEqual('5kmx4qbqlpld');
-
+```
 # createSharedCipher
 The shared cipher class contains a secret used to encrypt and decrypt messages.  For example, Alice sends a new_funds_request to Bob.  In the `new_funds_request` there is a `content` field.  The `content` field is encrypted by Alice and decrypted by Bob.
-
+```
 newFundsContent = {
     payee_public_address: 'purse@alice',
     amount: '1.75',
@@ -149,7 +153,7 @@ cipherAliceHex = cipherAlice.encrypt('new_funds_content', newFundsContent);
 cipherBob = Fio.createSharedCipher({privateKey: privateKeyBob, publicKey: publicKeyAlice, textEncoder: new TextEncoder(), textDecoder: new TextDecoder()});
 newFundsContentBob = cipherBob.decrypt('new_funds_content', cipherAliceHex);
 expect(newFundsContentBob).toEqual(newFundsContent);
-
+```
 See `src/encryption-fio.abi.json` for other message types like `new_funds_content`.
 
 # Message Encryption
