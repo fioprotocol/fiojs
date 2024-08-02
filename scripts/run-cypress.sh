@@ -12,7 +12,7 @@ else
   {
     echo
     echo -e "\033[34mCypress run...\033[0m"
-    cypress run --reporter mochawesome --spec 'cypress/integration/index.spec.js'
+    cypress run --reporter mochawesome --spec 'cypress/e2e/index.cy.js'
   } || {
     EXIT_CODE=1
   }
