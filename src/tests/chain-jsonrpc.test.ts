@@ -1,6 +1,6 @@
 import { RpcError } from "../chain-rpcerror";
 import { JsonRpc } from "../chain-jsonrpc";
-import * as _ from "lodash";
+import isEqual from "lodash/isEqual";
 
 describe("JSON RPC", () => {
     const endpoint = "http://localhost";
@@ -98,7 +98,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_abi(accountName);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -117,7 +117,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_account(accountName);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -136,7 +136,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_block_header_state(blockNumOrId);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -155,7 +155,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_block(blockNumOrId);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -174,7 +174,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_code(accountName);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -197,7 +197,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_currency_balance(code, account, symbol);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -220,7 +220,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_currency_balance(code, account);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -241,7 +241,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_currency_stats(code, symbol);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -257,7 +257,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_info();
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -273,7 +273,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_producer_schedule();
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -296,7 +296,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_producers(json, lowerBound, limit);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -319,7 +319,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_producers();
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -338,7 +338,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_raw_code_and_abi(accountName);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -361,7 +361,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_scheduled_transactions();
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -403,7 +403,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_table_rows(callParams);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -449,7 +449,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_table_rows(callParams);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -477,7 +477,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_table_by_scope(callParams);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -508,7 +508,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.get_table_by_scope(callParams);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -532,7 +532,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.getRequiredKeys(callParams);
 
-        expect(_.isEqual(response, expReturn.required_keys)).toBeTruthy();
+        expect(isEqual(response, expReturn.required_keys)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -567,7 +567,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.push_transaction(callParams);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -583,7 +583,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.db_size_get();
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -606,7 +606,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.history_get_actions(accountName, pos, offset);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -629,7 +629,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.history_get_actions(accountName);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -650,7 +650,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.history_get_transaction(id, blockNumHint);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -671,7 +671,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.history_get_transaction(id);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -690,7 +690,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.history_get_key_accounts(publicKey);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
@@ -709,7 +709,7 @@ describe("JSON RPC", () => {
 
         const response = await jsonRpc.history_get_controlled_accounts(controllingAccount);
 
-        expect(_.isEqual(response, expReturn)).toBeTruthy();
+        expect(isEqual(response, expReturn)).toBeTruthy();
         expect(fetch).toBeCalledWith(endpoint + expPath, expParams);
     });
 
