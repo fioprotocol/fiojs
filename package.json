@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "FioJS is a Utility SDK for packing, signing and encryption functionality for the FIO blockchain.  It is used by the FIO TypeScript SDK",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "cypress": "./scripts/run-cypress.sh",
     "cypress-ui": "./scripts/run-cypress.sh ui",
