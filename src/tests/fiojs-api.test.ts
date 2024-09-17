@@ -1,6 +1,6 @@
 import { TextDecoder, TextEncoder } from "text-encoding";
 import * as Fio from "../fio-api";
-import * as _ from "lodash";
+import isEqual from "lodash/isEqual";
 
 const rawAbi = {
     // tslint:disable-next-line:max-line-length
@@ -63,6 +63,6 @@ describe("FIO", () => {
         });
 
         // console.log(JSON.stringify(signedTransaction))
-        expect(_.isEqual(signedTransaction, preparedTransactionResult)).toBeTruthy();
+        expect(isEqual(signedTransaction, preparedTransactionResult)).toBeTruthy();
     });
 });

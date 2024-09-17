@@ -4,7 +4,7 @@ import { Api, signAllAuthorityProvider } from "../chain-api";
 import { JsSignatureProvider } from "../chain-jssig";
 
 import { JsonRpc } from "../chain-jsonrpc";
-import * as _ from "lodash";
+import isEqual from "lodash/isEqual";
 
 const transaction = {
     actions: [
@@ -131,7 +131,7 @@ const deserializedActions = [
 
 describe("chain-api", () => {
     let api: any;
-    const fetch = async (input: any, init: any): Promise<any> => ({
+    const fetch = async (input: any): Promise<any> => ({
         json: async () => {
             if (input === "/v1/chain/get_raw_code_and_abi") {
                 return {
@@ -181,19 +181,19 @@ describe("chain-api", () => {
 
     it("deserializeTransaction converts tx from binary", () => {
         const tx = api.deserializeTransaction(serializedTx);
-        expect(_.isEqual(tx, deserializedTx)).toBeTruthy();
+        expect(isEqual(tx, deserializedTx)).toBeTruthy();
     });
 
     it("serializeActions converts actions to hex", async () => {
         const response = await api.serializeActions(transaction.actions);
 
-        expect(_.isEqual(response, serializedActions)).toBeTruthy();
+        expect(isEqual(response, serializedActions)).toBeTruthy();
     });
 
     it("deserializeActions converts actions from hex", async () => {
         const response = await api.deserializeActions(serializedActions);
 
-        expect(_.isEqual(response, deserializedActions)).toBeTruthy();
+        expect(isEqual(response, deserializedActions)).toBeTruthy();
     });
 
     it("hasRequiredTaposFields returns true, if required fields are present", () => {

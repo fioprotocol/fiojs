@@ -1,6 +1,6 @@
 import { TextDecoder, TextEncoder } from "text-encoding";
 import * as ser from "../chain-serialize";
-import * as _ from "lodash";
+import isEqual from "lodash/isEqual";
 
 const { PrivateKey } = require("../ecc");
 const { serialize, deserialize, createSharedCipher } = require("../encryption-fio");
@@ -31,7 +31,7 @@ describe("Encryption FIO", () => {
         const array = ser.hexToUint8Array(newFundsContentHex);
         const buffer = new ser.SerialBuffer({ array, textEncoder, textDecoder });
         const newFundsContentRes = deserialize(buffer, "new_funds_content");
-        expect(_.isEqual(newFundsContentRes, newFundsContent)).toBeTruthy();
+        expect(isEqual(newFundsContentRes, newFundsContent)).toBeTruthy();
     });
 
     describe("Diffie Cipher", () => {
@@ -62,7 +62,7 @@ describe("Encryption FIO", () => {
                 textEncoder,
             });
             const cipherBobBase64 = cipherBob.encrypt("new_funds_content", newFundsContent, IV);
-            expect(_.isEqual(cipherBobBase64, newFundsContentCipherBase64)).toBeTruthy();
+            expect(isEqual(cipherBobBase64, newFundsContentCipherBase64)).toBeTruthy();
         });
 
         it("decrypt", () => {
@@ -74,7 +74,7 @@ describe("Encryption FIO", () => {
             });
             const newFundsContentAlice = cipherAlice.decrypt("new_funds_content", newFundsContentCipherBase64);
 
-            expect(_.isEqual(newFundsContentAlice, newFundsContent)).toBeTruthy();
+            expect(isEqual(newFundsContentAlice, newFundsContent)).toBeTruthy();
 
             const cipherBob = createSharedCipher({
                 privateKey: privateKeyBob,
@@ -83,7 +83,7 @@ describe("Encryption FIO", () => {
                 textEncoder,
             });
             const newFundsContentBob = cipherBob.decrypt("new_funds_content", newFundsContentCipherBase64);
-            expect(_.isEqual(newFundsContentBob, newFundsContent)).toBeTruthy();
+            expect(isEqual(newFundsContentBob, newFundsContent)).toBeTruthy();
         });
 
         it("hashA", () => {

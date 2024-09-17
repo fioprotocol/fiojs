@@ -1,5 +1,5 @@
 import { JsSignatureProvider } from "../chain-jssig";
-import * as _ from "lodash";
+import isEqual from "lodash/isEqual";
 
 const ecc = require("../ecc");
 
@@ -18,7 +18,7 @@ describe("JsSignatureProvider", () => {
         const actualPublicKeys = await provider.getAvailableKeys();
 
         expect(eccPkFromString).toHaveBeenCalledTimes(privateKeys.length);
-        expect(_.isEqual(actualPublicKeys, publicKeys)).toBeTruthy();
+        expect(isEqual(actualPublicKeys, publicKeys)).toBeTruthy();
     });
 
     it("signs a transaction", async () => {
@@ -39,7 +39,7 @@ describe("JsSignatureProvider", () => {
         const signOutput = await provider.sign({ chainId, requiredKeys, serializedTransaction, abis });
 
         expect(eccSignatureSign).toHaveBeenCalledTimes(2);
-        expect(_.isEqual(
+        expect(isEqual(
             signOutput,
             {
                 signatures: [privateKeys[0], privateKeys[2]],
