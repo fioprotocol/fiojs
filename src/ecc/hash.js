@@ -1,5 +1,6 @@
 const createHash = require('create-hash')
 const createHmac = require('create-hmac')
+const Ripemd160 = require('ripemd160')
 
 /** @namespace hash */
 
@@ -35,7 +36,11 @@ function ripemd160(data) {
     try {
 	    return createHash('rmd160').update(data).digest();
     } catch(e) {
-	    return createHash('ripemd160').update(data).digest();
+	    try {
+            return createHash('ripemd160').update(data).digest();
+        } catch (e) {
+            return new Ripemd160().update(data instanceof Uint8Array ? Buffer.from(data) : data).digest()
+        }
     }
 }
 

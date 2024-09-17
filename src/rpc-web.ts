@@ -1,3 +1,4 @@
-import { RpcError } from './chain-rpcerror';
+import { RpcError } from "./chain-rpcerror";
+import { JsonRpc } from "./chain-jsonrpc";
 
-export { RpcError };
+export { JsonRpc, RpcError };

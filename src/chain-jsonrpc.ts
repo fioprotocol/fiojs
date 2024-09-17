@@ -3,15 +3,23 @@
  */
 // copyright defined in fiojs/LICENSE.txt
 
-import { AbiProvider, AuthorityProvider, AuthorityProviderArgs, BinaryAbi } from '../chain-api-interfaces';
-import { base64ToBinary, convertLegacyPublicKeys } from '../chain-numeric';
-import { GetAbiResult, GetBlockResult, GetCodeResult, GetInfoResult, GetRawCodeAndAbiResult, GetRawAbiResult, PushTransactionArgs } from "../chain-rpc-interfaces" // tslint:disable-line
-import { RpcError } from '../chain-rpcerror';
+import { AbiProvider, AuthorityProvider, AuthorityProviderArgs, BinaryAbi } from "./chain-api-interfaces";
+import { base64ToBinary, convertLegacyPublicKeys } from "./chain-numeric";
+import {
+    GetAbiResult,
+    GetBlockResult,
+    GetCodeResult,
+    GetInfoResult,
+    GetRawCodeAndAbiResult,
+    GetRawAbiResult,
+    PushTransactionArgs
+} from "./chain-rpc-interfaces";
+import { RpcError } from "./chain-rpcerror";
 
 function arrayToHex(data: Uint8Array) {
-    let result = '';
+    let result = "";
     for (const x of data) {
-        result += ('00' + x.toString(16)).slice(-2);
+        result += ("00" + x.toString(16)).slice(-2);
     }
     return result;
 }
@@ -22,10 +30,9 @@ export class JsonRpc implements AuthorityProvider, AbiProvider {
     public fetchBuiltin: (input?: Request | string, init?: RequestInit) => Promise<Response>;
 
     /**
-     * @param args
-     *    * `fetch`:
-     *    * browsers: leave `null` or `undefined`
-     *    * node: provide an implementation
+     * @param args.fetch
+     * browsers: leave `null` or `undefined`
+     * node: provide an implementation
      */
     constructor(endpoint: string, args:
         { fetch?: (input?: string | Request, init?: RequestInit) => Promise<Response> } = {},
@@ -46,7 +53,7 @@ export class JsonRpc implements AuthorityProvider, AbiProvider {
             const f = this.fetchBuiltin;
             response = await f(this.endpoint + path, {
                 body: JSON.stringify(body),
-                method: 'POST',
+                method: "POST",
             });
             json = await response.json();
             if (json.processed && json.processed.except) {
@@ -64,62 +71,62 @@ export class JsonRpc implements AuthorityProvider, AbiProvider {
 
     /** Raw call to `/v1/chain/get_abi` */
     public async get_abi(accountName: string): Promise<GetAbiResult> {
-        return await this.fetch('/v1/chain/get_abi', { account_name: accountName });
+        return await this.fetch("/v1/chain/get_abi", { account_name: accountName });
     }
 
     /** Raw call to `/v1/chain/get_account` */
     public async get_account(accountName: string): Promise<any> {
-        return await this.fetch('/v1/chain/get_account', { account_name: accountName });
+        return await this.fetch("/v1/chain/get_account", { account_name: accountName });
     }
 
     /** Raw call to `/v1/chain/get_block_header_state` */
     public async get_block_header_state(blockNumOrId: number | string): Promise<any> {
-        return await this.fetch('/v1/chain/get_block_header_state', { block_num_or_id: blockNumOrId });
+        return await this.fetch("/v1/chain/get_block_header_state", { block_num_or_id: blockNumOrId });
     }
 
     /** Raw call to `/v1/chain/get_block` */
     public async get_block(blockNumOrId: number | string): Promise<GetBlockResult> {
-        return await this.fetch('/v1/chain/get_block', { block_num_or_id: blockNumOrId });
+        return await this.fetch("/v1/chain/get_block", { block_num_or_id: blockNumOrId });
     }
 
     /** Raw call to `/v1/chain/get_code` */
     public async get_code(accountName: string): Promise<GetCodeResult> {
-        return await this.fetch('/v1/chain/get_code', { account_name: accountName });
+        return await this.fetch("/v1/chain/get_code", { account_name: accountName });
     }
 
     /** Raw call to `/v1/chain/get_currency_balance` */
     public async get_currency_balance(code: string, account: string, symbol: string = null): Promise<any> {
-        return await this.fetch('/v1/chain/get_currency_balance', { code, account, symbol });
+        return await this.fetch("/v1/chain/get_currency_balance", { account, code, symbol });
     }
 
     /** Raw call to `/v1/chain/get_currency_stats` */
     public async get_currency_stats(code: string, symbol: string): Promise<any> {
-        return await this.fetch('/v1/chain/get_currency_stats', { code, symbol });
+        return await this.fetch("/v1/chain/get_currency_stats", { code, symbol });
     }
 
     /** Raw call to `/v1/chain/get_info` */
     public async get_info(): Promise<GetInfoResult> {
-        return await this.fetch('/v1/chain/get_info', {});
+        return await this.fetch("/v1/chain/get_info", {});
     }
 
     /** Raw call to `/v1/chain/get_producer_schedule` */
     public async get_producer_schedule(): Promise<any> {
-        return await this.fetch('/v1/chain/get_producer_schedule', {});
+        return await this.fetch("/v1/chain/get_producer_schedule", {});
     }
 
     /** Raw call to `/v1/chain/get_producers` */
-    public async get_producers(json = true, lowerBound = '', limit = 50): Promise<any> {
-        return await this.fetch('/v1/chain/get_producers', { json, lower_bound: lowerBound, limit });
+    public async get_producers(json = true, lowerBound = "", limit = 50): Promise<any> {
+        return await this.fetch("/v1/chain/get_producers", { json, limit, lower_bound: lowerBound });
     }
 
     /** Raw call to `/v1/chain/get_raw_code_and_abi` */
     public async get_raw_code_and_abi(accountName: string): Promise<GetRawCodeAndAbiResult> {
-        return await this.fetch('/v1/chain/get_raw_code_and_abi', { account_name: accountName });
+        return await this.fetch("/v1/chain/get_raw_code_and_abi", { account_name: accountName });
     }
 
     /** Raw call to `/v1/chain/get_raw_code_and_abi` */
     public async get_raw_abi(accountName: string): Promise<GetRawAbiResult> {
-        return await this.fetch('/v1/chain/get_raw_abi', { account_name: accountName });
+        return await this.fetch("/v1/chain/get_raw_abi", { account_name: accountName });
     }
 
     /** calls `/v1/chain/get_raw_code_and_abi` and pulls out unneeded raw wasm code */
@@ -131,8 +138,8 @@ export class JsonRpc implements AuthorityProvider, AbiProvider {
     }
 
     /** Raw call to `/v1/chain/get_scheduled_transactions` */
-    public async get_scheduled_transactions(json = true, lowerBound = '', limit = 50): Promise<any> {
-        return await this.fetch('/v1/chain/get_scheduled_transactions', { json, lower_bound: lowerBound, limit });
+    public async get_scheduled_transactions(json = true, lowerBound = "", limit = 50): Promise<any> {
+        return await this.fetch("/v1/chain/get_scheduled_transactions", { json, limit, lower_bound: lowerBound });
     }
 
     /** Raw call to `/v1/chain/get_table_rows` */
@@ -141,29 +148,29 @@ export class JsonRpc implements AuthorityProvider, AbiProvider {
         code,
         scope,
         table,
-        table_key = '',
-        lower_bound = '',
-        upper_bound = '',
+        table_key = "",
+        lower_bound = "",
+        upper_bound = "",
         index_position = 1,
-        key_type = '',
+        key_type = "",
         limit = 10,
         reverse = false,
         show_payer = false,
      }: any): Promise<any> {
         return await this.fetch(
-            '/v1/chain/get_table_rows', {
-                json,
+            "/v1/chain/get_table_rows", {
                 code,
-                scope,
-                table,
-                table_key,
-                lower_bound,
-                upper_bound,
                 index_position,
+                json,
                 key_type,
                 limit,
+                lower_bound,
                 reverse,
+                scope,
                 show_payer,
+                table,
+                table_key,
+                upper_bound,
             });
     }
 
@@ -171,60 +178,60 @@ export class JsonRpc implements AuthorityProvider, AbiProvider {
     public async get_table_by_scope({
         code,
         table,
-        lower_bound = '',
-        upper_bound = '',
+        lower_bound = "",
+        upper_bound = "",
         limit = 10,
     }: any): Promise<any> {
         return await this.fetch(
-            '/v1/chain/get_table_by_scope', {
+            "/v1/chain/get_table_by_scope", {
                 code,
-                table,
-                lower_bound,
-                upper_bound,
                 limit,
+                lower_bound,
+                table,
+                upper_bound,
             });
     }
 
     /** Get subset of `availableKeys` needed to meet authorities in `transaction`. Implements `AuthorityProvider` */
     public async getRequiredKeys(args: AuthorityProviderArgs): Promise<string[]> {
-        return convertLegacyPublicKeys((await this.fetch('/v1/chain/get_required_keys', {
-            transaction: args.transaction,
+        return convertLegacyPublicKeys((await this.fetch("/v1/chain/get_required_keys", {
             available_keys: args.availableKeys,
+            transaction: args.transaction,
         })).required_keys);
     }
 
     /** Push a serialized transaction */
     public async push_transaction(
-        { signatures, serializedTransaction, serializedContextFreeData }: PushTransactionArgs
+        { signatures, serializedTransaction, serializedContextFreeData }: PushTransactionArgs,
     ): Promise<any> {
-        return await this.fetch('/v1/chain/push_transaction', {
-            signatures,
+        return await this.fetch("/v1/chain/push_transaction", {
             compression: 0,
             packed_context_free_data: arrayToHex(serializedContextFreeData || new Uint8Array(0)),
             packed_trx: arrayToHex(serializedTransaction),
+            signatures,
         });
     }
 
     /** Raw call to `/v1/db_size/get` */
-    public async db_size_get() { return await this.fetch('/v1/db_size/get', {}); }
+    public async db_size_get() { return await this.fetch("/v1/db_size/get", {}); }
 
     /** Raw call to `/v1/history/get_actions` */
     public async history_get_actions(accountName: string, pos: number = null, offset: number = null) {
-        return await this.fetch('/v1/history/get_actions', { account_name: accountName, pos, offset });
+        return await this.fetch("/v1/history/get_actions", { account_name: accountName, offset, pos });
     }
 
     /** Raw call to `/v1/history/get_transaction` */
     public async history_get_transaction(id: string, blockNumHint: number = null) {
-        return await this.fetch('/v1/history/get_transaction', { id, block_num_hint: blockNumHint });
+        return await this.fetch("/v1/history/get_transaction", { block_num_hint: blockNumHint, id });
     }
 
     /** Raw call to `/v1/history/get_key_accounts` */
     public async history_get_key_accounts(publicKey: string) {
-        return await this.fetch('/v1/history/get_key_accounts', { public_key: publicKey });
+        return await this.fetch("/v1/history/get_key_accounts", { public_key: publicKey });
     }
 
     /** Raw call to `/v1/history/get_controlled_accounts` */
     public async history_get_controlled_accounts(controllingAccount: string) {
-        return await this.fetch('/v1/history/get_controlled_accounts', { controlling_account: controllingAccount });
+        return await this.fetch("/v1/history/get_controlled_accounts", { controlling_account: controllingAccount });
     }
 } // JsonRpc

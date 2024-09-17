@@ -1,7 +1,6 @@
 const PrivateKey = require("./key_private")
 const PublicKey = require("./key_public")
 const Signature = require("./signature")
-const key_utils = require("./key_utils")
 const hash = require("./hash")
 
 /**
@@ -35,31 +34,31 @@ const ecc = {
     ),
 
     /**
-        @arg {number} [cpuEntropyBits = 0] gather additional entropy
-        from a CPU mining algorithm.  This will already happen once by
-        default.
-
-        @return {Promise<wif>}
-
-        @example
-ecc.randomKey().then(privateKey => {
-  console.log('Private Key:\t', privateKey) // wif
-  console.log('Public Key:\t', ecc.privateToPublic(privateKey)) // FIOkey...
-})
-    */
+     *  @arg {number} [cpuEntropyBits = 0] gather additional entropy
+     *  from a CPU mining algorithm.  This will already happen once by
+     *  default.
+     *
+     *  @return {Promise<wif>}
+     *
+     *  @example
+     *  ecc.randomKey().then(privateKey => {
+     *    console.log('Private Key:\t', privateKey) // wif
+     *    console.log('Public Key:\t', ecc.privateToPublic(privateKey)) // FIOkey...
+     *  })
+     */
     randomKey: (cpuEntropyBits) => (
       PrivateKey.randomKey(cpuEntropyBits).then(key => key.toString())
     ),
 
     /**
 
-        @arg {string} seed - any length string.  This is private.  The same
-        seed produces the same private key every time.  At least 128 random
-        bits should be used to produce a good private key.
-        @return {wif}
-
-        @example ecc.seedPrivate('secret') === wif
-    */
+     *  @arg {string} seed - any length string.  This is private.  The same
+     *  seed produces the same private key every time.  At least 128 random
+     *  bits should be used to produce a good private key.
+     *  @return {wif}
+     *
+     *  @example ecc.seedPrivate('secret') === wif
+     */
     seedPrivate: seed => PrivateKey.fromSeed(seed).toString(),
 
     /**
@@ -97,7 +96,7 @@ ecc.randomKey().then(privateKey => {
 
         @arg {string|Buffer} data
         @arg {wif|PrivateKey} privateKey
-        @arg {String} [encoding = 'utf8'] - data encoding (if string)
+        @arg {string} [encoding = 'utf8'] - data encoding (if string)
 
         @return {string} string signature
 
@@ -156,9 +155,9 @@ ecc.randomKey().then(privateKey => {
     /**
         Recover the public key used to create the signature.
 
-        @arg {String|Buffer} signature (FIObase58sig.., Hex, Buffer)
-        @arg {String|Buffer} data - full data
-        @arg {String} [encoding = 'utf8'] - data encoding (if data is a string)
+        @arg {string|Buffer} signature (FIObase58sig.., Hex, Buffer)
+        @arg {string|Buffer} data - full data
+        @arg {string} [encoding = 'utf8'] - data encoding (if data is a string)
 
         @return {pubkey}
 
@@ -177,9 +176,9 @@ ecc.randomKey().then(privateKey => {
     },
 
     /**
-        @arg {String|Buffer} signature (FIObase58sig.., Hex, Buffer)
-        @arg {String|Buffer} dataSha256 - sha256 hash 32 byte buffer or hex string
-        @arg {String} [encoding = 'hex'] - dataSha256 encoding (if dataSha256 is a string)
+        @arg {string|Buffer} signature (FIObase58sig.., Hex, Buffer)
+        @arg {string|Buffer} dataSha256 - sha256 hash 32 byte buffer or hex string
+        @arg {string} [encoding = 'hex'] - dataSha256 encoding (if dataSha256 is a string)
 
         @return {PublicKey}
     */
@@ -189,13 +188,19 @@ ecc.randomKey().then(privateKey => {
     },
 
     /** @arg {string|Buffer} data - always binary, you may need Buffer.from(data, 'hex')
-        @arg {string} [encoding = 'hex'] - result encoding 'hex', 'binary' or 'base64'
+        @arg {string} [resultEncoding = 'hex'] - result encoding 'hex', 'binary' or 'base64'
         @return {string|Buffer} - Buffer when encoding is null, or string
 
         @example ecc.sha256('hashme') === '02208b..'
-        @example ecc.sha256(Buffer.from('02208b', 'hex')) === '29a23..'
     */
-    sha256: (data, resultEncoding = 'hex') => hash.sha256(data, resultEncoding)
+    sha256: (data, resultEncoding = 'hex') => hash.sha256(data, resultEncoding),
+
+    /** @arg {string|Buffer} data - String or buffer with hashed
+     *  @return {string|Buffer} - Buffer when encoding is null, or string
+     *
+     *  @example ecc.ripemd160('hashme') === '02208b..'
+     */
+    ripemd160: (data) => hash.ripemd160(data),
 }
 
 module.exports = ecc

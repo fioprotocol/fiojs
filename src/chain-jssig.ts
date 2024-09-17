@@ -3,24 +3,24 @@
  */
 // copyright defined in fiojs/LICENSE.txt
 
-import { SignatureProvider, SignatureProviderArgs } from './chain-api-interfaces';
-import { convertLegacyPublicKey } from './chain-numeric';
+import { SignatureProvider, SignatureProviderArgs } from "./chain-api-interfaces";
+import { convertLegacyPublicKey } from "./chain-numeric";
 
-const ecc = require('./ecc');
+const ecc = require("./ecc");
 
 function hexToUint8Array(hex: string) {
-    if (typeof hex !== 'string') {
-        throw new Error('Expected string containing hex digits');
+    if (typeof hex !== "string") {
+        throw new Error("Expected string containing hex digits");
     }
     if (hex.length % 2) {
-        throw new Error('Odd number of hex digits');
+        throw new Error("Odd number of hex digits");
     }
     const l = hex.length / 2;
     const result = new Uint8Array(l);
     for (let i = 0; i < l; ++i) {
         const x = parseInt(hex.substr(i * 2, 2), 16);
         if (Number.isNaN(x)) {
-            throw new Error('Expected hex string');
+            throw new Error("Expected hex string");
         }
         result[i] = x;
     }
@@ -51,15 +51,15 @@ export class JsSignatureProvider implements SignatureProvider {
 
     /** Sign a transaction */
     public async sign(
-        { chainId, requiredKeys, serializedTransaction, serializedContextFreeData }: SignatureProviderArgs
+        { chainId, requiredKeys, serializedTransaction, serializedContextFreeData }: SignatureProviderArgs,
     ) {
         const signBuf = Buffer.concat([
-            new Buffer(chainId, 'hex'),
+            new Buffer(chainId, "hex"),
             new Buffer(serializedTransaction),
             new Buffer(
                 serializedContextFreeData ?
                     hexToUint8Array(ecc.sha256(serializedContextFreeData)) :
-                    new Uint8Array(32)
+                    new Uint8Array(32),
             ),
         ]);
         const signatures = requiredKeys.map(
