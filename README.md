@@ -159,6 +159,12 @@ See `src/encryption-fio.abi.json` for other message types like `new_funds_conten
 # Message Encryption
 See `docs/message_encryption.md`
 
+## Version 1.0.2
+Bug Fix. 
+- Fix Fallback for ripemd160 in Hashing Algorithms for NODE v17.
+- Set strict verions of packages. 
+- Update cypress
+
 ## Version 1.0.1
 Bug Fix.  Fallback for ripemd160 in Hashing Algorithms.  Git Commit reference: 2d565b32888ad748e3d64ba04252aae97a6e031a
 
