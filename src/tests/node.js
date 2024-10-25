@@ -1,6 +1,6 @@
 const { Fio, RpcError, Api } = require('../../dist');
 const { JsSignatureProvider } = require('../../dist/chain-jssig');
-const { JsonRpc } = require('../../dist/tests/chain-jsonrpc');
+const { JsonRpc } = require('../../dist/chain-jsonrpc');
 const { TextEncoder, TextDecoder } = require('util');
 const fetch = require('node-fetch');
 
