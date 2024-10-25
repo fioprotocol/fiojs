@@ -8,5 +8,11 @@ docs-build/
 #cypress artifacts
 cypress/screenshots/
 cypress/videos/
+cypress/downloads/
 reports/
 coverage/
+
+#editors
+.idea
+.vscode
+.fleet

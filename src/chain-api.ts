@@ -3,12 +3,19 @@
  */
 // copyright defined in fiojs/LICENSE.txt
 
-import { AbiProvider, AuthorityProvider, AuthorityProviderArgs, BinaryAbi, CachedAbi, SignatureProvider } from './chain-api-interfaces';
-import { Abi, GetInfoResult, PushTransactionArgs } from './chain-rpc-interfaces';
-import * as ser from './chain-serialize';
+import {
+    AbiProvider,
+    AuthorityProvider,
+    AuthorityProviderArgs,
+    BinaryAbi,
+    CachedAbi,
+    SignatureProvider,
+} from "./chain-api-interfaces";
+import { Abi, PushTransactionArgs } from "./chain-rpc-interfaces";
+import * as ser from "./chain-serialize";
 
-const abiAbi = require('../src/abi.abi.json');
-const transactionAbi = require('../src/transaction.abi.json');
+const abiAbi = require("../src/abi.abi.json");
+const transactionAbi = require("../src/transaction.abi.json");
 
 export class Api {
     /** Get subset of `availableKeys` needed to meet authorities in a `transaction` */
@@ -69,15 +76,15 @@ export class Api {
     /** Decodes an abi as Uint8Array into json. */
     public rawAbiToJson(rawAbi: Uint8Array): Abi {
         const buffer = new ser.SerialBuffer({
-            textEncoder: this.textEncoder,
-            textDecoder: this.textDecoder,
             array: rawAbi,
+            textDecoder: this.textDecoder,
+            textEncoder: this.textEncoder,
         });
         if (!ser.supportedAbiVersion(buffer.getString())) {
-            throw new Error('Unsupported abi version');
+            throw new Error("Unsupported abi version");
         }
         buffer.restartRead();
-        return this.abiTypes.get('abi_def').deserialize(buffer);
+        return this.abiTypes.get("abi_def").deserialize(buffer);
     }
 
     /** Get abi in both binary and structured forms. Reload from AbiProvider when needed. */
@@ -111,9 +118,9 @@ export class Api {
         const actions = (transaction.context_free_actions || []).concat(transaction.actions);
         const accounts: string[] = actions.map((action: ser.Action): string => action.account);
         const uniqueAccounts: Set<string> = new Set(accounts);
-        const actionPromises: Array<Promise<BinaryAbi>> = [...uniqueAccounts].map(
+        const actionPromises: Promise<BinaryAbi>[] = [...uniqueAccounts].map(
             async (account: string): Promise<BinaryAbi> => ({
-                accountName: account, abi: (await this.getCachedAbi(account, reload)).rawAbi,
+                abi: (await this.getCachedAbi(account, reload)).rawAbi, accountName: account,
             }));
         return Promise.all(actionPromises);
     }
@@ -147,12 +154,12 @@ export class Api {
     /** Convert a transaction to binary */
     public serializeTransaction(transaction: any): Uint8Array {
         const buffer = new ser.SerialBuffer({ textEncoder: this.textEncoder, textDecoder: this.textDecoder });
-        this.serialize(buffer, 'transaction', {
-            max_net_usage_words: 0,
-            max_cpu_usage_ms: 0,
-            delay_sec: 0,
-            context_free_actions: [],
+        this.serialize(buffer, "transaction", {
             actions: [],
+            context_free_actions: [],
+            delay_sec: 0,
+            max_cpu_usage_ms: 0,
+            max_net_usage_words: 0,
             transaction_extensions: [],
             ...transaction,
         });
@@ -176,7 +183,7 @@ export class Api {
     public deserializeTransaction(transaction: Uint8Array): any {
         const buffer = new ser.SerialBuffer({ textEncoder: this.textEncoder, textDecoder: this.textDecoder });
         buffer.pushArray(transaction);
-        return this.deserialize(buffer, 'transaction');
+        return this.deserialize(buffer, "transaction");
     }
 
     /** Convert actions to hex */
@@ -199,14 +206,14 @@ export class Api {
 
     /** Convert a transaction from binary. Also deserializes actions. */
     public async deserializeTransactionWithActions(transaction: Uint8Array | string): Promise<any> {
-        if (typeof transaction === 'string') {
+        if (typeof transaction === "string") {
             transaction = ser.hexToUint8Array(transaction);
         }
         const deserializedTransaction = this.deserializeTransaction(transaction);
         const deserializedCFActions = await this.deserializeActions(deserializedTransaction.context_free_actions);
         const deserializedActions = await this.deserializeActions(deserializedTransaction.actions);
         return {
-            ...deserializedTransaction, context_free_actions: deserializedCFActions, actions: deserializedActions
+            ...deserializedTransaction, actions: deserializedActions, context_free_actions: deserializedCFActions,
         };
     }
 
@@ -219,33 +226,31 @@ export class Api {
      */
     public async transact(transaction: any, { sign = true }:
         { sign?: boolean; } = {}): Promise<any> {
-        let info: GetInfoResult;
-
         if (!this.hasRequiredTaposFields(transaction)) {
-            throw new Error('Required configuration or TAPOS fields are not present');
+            throw new Error("Required configuration or TAPOS fields are not present");
         }
 
         const abis: BinaryAbi[] = await this.getTransactionAbis(transaction);
         transaction = {
             ...transaction,
+            actions: await this.serializeActions(transaction.actions),
             context_free_actions: await this.serializeActions(transaction.context_free_actions || []),
-            actions: await this.serializeActions(transaction.actions)
         };
         const serializedTransaction = this.serializeTransaction(transaction);
         const serializedContextFreeData = this.serializeContextFreeData(transaction.context_free_data);
         let pushTransactionArgs: PushTransactionArgs = {
-            serializedTransaction, serializedContextFreeData, signatures: []
+            serializedContextFreeData, serializedTransaction, signatures: [],
         };
 
         if (sign) {
             const availableKeys = await this.signatureProvider.getAvailableKeys();
             const requiredKeys = await this.authorityProvider.getRequiredKeys({ transaction, availableKeys });
             pushTransactionArgs = await this.signatureProvider.sign({
+                abis,
                 chainId: this.chainId,
                 requiredKeys,
-                serializedTransaction,
                 serializedContextFreeData,
-                abis,
+                serializedTransaction,
             });
         }
 
@@ -260,15 +265,15 @@ export class Api {
 } // Api
 
 /**
-    Simple authority provider that signs with all provided keys.
-
-    If their more availableKeys than are required to sign then the get_required_keys
-    rpc call is required to filter them (tests/chain-jsonrpc.ts
-    getRequiredKeys(authorityProviderArgs))
-*/
-export const signAllAuthorityProvider : AuthorityProvider = {
-    getRequiredKeys: async function(authorityProviderArgs : AuthorityProviderArgs) {
-        const { availableKeys } = authorityProviderArgs
-        return availableKeys
-    }
-}
+ *   Simple authority provider that signs with all provided keys.
+ *
+ *    If their more availableKeys than are required to sign then the get_required_keys
+ *    rpc call is required to filter them (tests/chain-jsonrpc.ts
+ *    getRequiredKeys(authorityProviderArgs))
+ */
+export const signAllAuthorityProvider: AuthorityProvider = {
+    async getRequiredKeys(authorityProviderArgs: AuthorityProviderArgs) {
+        const { availableKeys } = authorityProviderArgs;
+        return availableKeys;
+    },
+};

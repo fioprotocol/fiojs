@@ -1,6 +1,6 @@
 // copyright defined in fiojs/LICENSE.txt
 
-import { Abi, PushTransactionArgs } from './chain-rpc-interfaces';
+import { Abi, PushTransactionArgs } from "./chain-rpc-interfaces";
 
 /** Arguments to `getRequiredKeys` */
 export interface AuthorityProviderArgs {

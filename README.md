@@ -30,6 +30,21 @@ Make sure to install typescript by running, this command in terminal:
 
     sudo npm install -g typescript
 
+# Publishing to Node Package Manager (npm)
+To publish to npm.  
+1. Update the version number, for this release. In 'package.json'
+2. Publish to npm:
+
+        cd fiosdk_typescript
+        yarn
+        tsc
+        npm test
+        npm publish --access public
+
+Further details: 
+    http://npmjs.com/ 
+    https://docs.npmjs.com/creating-and-publishing-scoped-public-packages
+
 # Using the SDK
 
 # Import if installing manually
